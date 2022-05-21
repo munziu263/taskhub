@@ -1,0 +1,12 @@
+{
+    "cSpell.words": [
+        "dataclass",
+        "flask",
+        "flask_cors",
+        "flask_sqlalchemy",
+        "jsonify",
+        "mziumbe",
+        "sqlalchemy",
+        "taskhub"
+    ]
+}
