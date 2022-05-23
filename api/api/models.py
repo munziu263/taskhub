@@ -1,4 +1,4 @@
-from app import db
+from api.app import db
 from dataclasses import dataclass
 from datetime import datetime
 
@@ -14,6 +14,7 @@ class Task(db.Model):
     deadline: datetime
     
     __tablename__="task"
+    __table_args__ = {'keep_existing': True}
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), nullable=False)
     estimated_time = db.Column(db.Integer, default=0)
@@ -37,6 +38,7 @@ class Project(db.Model):
     tasks: Task
     
     __tablename__="project"
+    __table_args__ = {'keep_existing': True}
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     # --- Relationships

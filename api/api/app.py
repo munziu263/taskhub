@@ -10,16 +10,16 @@ app = Flask(__name__)
 CORS(app)
 
 # --- Add Database
-db_path = r"C:\Users\mziumbe\Documents\GitHub\taskhub\backend\taskhub\database.db"
+db_path = r"C:\Users\mziumbe\Documents\GitHub\taskhub\api\api\database.db"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + db_path
 db = SQLAlchemy(app)
 
 # --- Add all models Models
-import models
+import api.models
 
 
 # --- Add routes for the tasks and projects
-import routes
+import api.routes
 
 if __name__ == "__main__":
     # --- Run the app 

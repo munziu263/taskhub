@@ -1,4 +1,4 @@
-from app import Project, Task
+from api.models import Project, Task
 
 
 projects = [
