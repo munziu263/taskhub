@@ -50,7 +50,7 @@ class Project(db.Model):
     tasks = db.relationship("Task", backref="project")
 
     def __repr__(self):
-        return "<Task %r>" % self.name
+        return "<Project %r>" % self.name
 
 
 class TaskSchema(ma.SQLAlchemyAutoSchema):

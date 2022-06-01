@@ -1,8 +1,7 @@
-from api.app.utils import load_data_using_schema
+import json
 from ..models import ProjectSchema, TaskSchema, db
 from ..models import Project, Task
-from flask import request, jsonify, Blueprint
-from flask import current_app as app
+from flask import request, jsonify, request_started
 from . import main
 
 
@@ -33,7 +32,7 @@ def get_all_tasks():
 
 
 @main.route("/tasks/<int:task_id>", methods=["GET"])
-def get_task_by_id(task_id: int = None):
+def get_task_by_id(task_id: int):
     result = Task.query.filter_by(id=task_id).first_or_404()
     return jsonify(result)
 
@@ -42,24 +41,53 @@ def get_task_by_id(task_id: int = None):
 @main.route("/projects/", methods=["POST"])
 def create_project():
     data = request.json
+    project_schema = ProjectSchema()
+    project = project_schema.loads(data)
 
-    [schema, project] = load_data_using_schema(ProjectSchema, data)
+    db.session.add(project)
+    db.session.commit()
 
-    return schema.jsonify(project)
+    return project_schema.jsonify(project), 201
 
 
 @main.route("/projects/<int:project_id>", methods=["POST"])
 def add_task_to_project(project_id: int):
-    data = request.json
+    data = json.loads(request.json)
 
-    [schema, task] = load_data_using_schema(TaskSchema, data)
+    # --- Add the project number to the request data
+    data["project_id"] = project_id
+    data = json.dumps(data)
 
-    return schema.jsonify(task)
+    task_schema = TaskSchema()
+    task = task_schema.loads(data)
+
+    db.session.add(task)
+    db.session.commit()
+
+    return task_schema.jsonify(task), 201
 
 
 @main.route("/tasks/", methods=["POST"])
 def create_task():
     data = request.json
-    [schema, task] = load_data_using_schema(TaskSchema, data)
+    task_schema = TaskSchema()
+    task = task_schema.loads(data)
 
-    return schema.jsonify(task)
+    db.session.add(task)
+    db.session.commit()
+
+    return task_schema.jsonify(task), 201
+
+
+# --- PUT / UPDATE ROUTES
+@main.route("/projects/<int:project_id>", methods=["PUT"])
+def update_project_by_id(project_id: int):
+    data = json.loads(request.json)
+
+    project_schema = ProjectSchema()
+    project = project_schema.loads(request.json)
+
+    db.session.query(Project).filter_by(id=project_id).update(data)
+    db.session.commit()
+
+    return project_schema.jsonify(project)
