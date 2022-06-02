@@ -250,16 +250,16 @@ def test_update_project_by_id(client):
     updated_project = response.json
 
     # --- THEN
-    # --- I successfully run the function
+    # --- Check that the response was successful
     assert response.status_code == 200
     assert update_request["name"] == updated_project["name"]
-    assert not original_project == updated_project
+    assert original_project != updated_project
 
-    # --- when I request the project, I get the right one.
+    # --- Check that when I request the project, I get the right one.
     response = client.get(f"/projects/{original_project['id']}")
     collected_project = response.json
     assert updated_project == collected_project
-    assert not original_project == collected_project
+    assert original_project != collected_project
 
 
 def test_update_task(client):
@@ -277,35 +277,59 @@ def test_update_task(client):
     updated_task = response.json
 
     # --- THEN
-    # --- I successfully run the function
+    # --- check that the response was successful
     assert response.status_code == 200
     assert update_request["name"] == updated_task["name"]
-    assert not original_task == updated_task
+    assert original_task != updated_task
 
-    # --- when I request the project, I get the right one.
+    # --- check that when I request the task, I get the right one.
     response = client.get(f"/tasks/{original_task['id']}")
-    collected_project = response.json
-    assert updated_task == collected_project
-    assert not original_task == collected_project
+    collected_tasks = response.json
+    assert updated_task == collected_tasks
+    assert original_task != collected_tasks
 
 
-def test_delete_project(client):
-    # GIVEN a test client AND
-    # WHEN
-    # THEN
-
-    # --- GIVEN
-    # --- WHEN
-    # --- THEN
-    pass
-
-
-def test_delete_test(client):
-    # GIVEN
-    # WHEN
-    # THEN
+def test_delete_project_by_id(client):
+    # GIVEN a test client AND 3 existing projects
+    # WHEN a valid 'DELETE' request is made to '/projects/<int:project_id>'
+    # THEN check that the project has been successfully deleted.
 
     # --- GIVEN
+    existing_projects = given_x_objects(3, "projects", client)
+
     # --- WHEN
+    requested_project = random.choice(existing_projects)
+    response = client.delete(f"/projects/{requested_project['id']}")
+
     # --- THEN
-    pass
+    # --- check the request was successful
+    assert response.status_code == 200
+
+    # --- check the project is no longer in projects
+    response = client.get("/projects")
+    collected_projects = response.json
+    assert len(collected_projects) < len(existing_projects)
+    assert requested_project not in collected_projects
+
+
+def test_delete_task_by_id(client):
+    # GIVEN a test client AND 5 existing tasks
+    # WHEN a valid 'DELETE' request is made to '/tasks/<int:task_id>'
+    # THEN check that the task has been successfully deleted.
+
+    # --- GIVEN
+    existing_tasks = given_x_objects(5, "tasks", client)
+
+    # --- WHEN
+    requested_task = random.choice(existing_tasks)
+    response = client.delete(f"/tasks/{requested_task['id']}")
+
+    # --- THEN
+    # --- check the request was successful
+    assert response.status_code == 200
+
+    # --- check that the project is no longer in projects
+    response = client.get("/tasks")
+    collected_tasks = response.json
+    assert len(collected_tasks) < len(existing_tasks)
+    assert requested_task not in collected_tasks

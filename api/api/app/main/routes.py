@@ -15,13 +15,13 @@ def index():
 # --- GET routes
 @main.route("/projects", methods=["GET"])
 def get_all_projects():
-    result = db.session.query(Project).all()
+    result = Project.query.all()
     return jsonify(result)
 
 
 @main.route("/projects/<int:project_id>", methods=["GET"])
 def get_project_by_id(project_id: int):
-    result = Project.query.filter_by(id=project_id).first_or_404()
+    result = Project.get_by_id(project_id)
     return jsonify(result)
 
 
@@ -33,76 +33,58 @@ def get_all_tasks():
 
 @main.route("/tasks/<int:task_id>", methods=["GET"])
 def get_task_by_id(task_id: int):
-    result = Task.query.filter_by(id=task_id).first_or_404()
+    result = Task.get_by_id(task_id)
     return jsonify(result)
 
 
 # --- POST Routes
 @main.route("/projects", methods=["POST"])
 def create_project():
-    data = request.json
-    project_schema = ProjectSchema()
-    project = project_schema.loads(data)
-
-    db.session.add(project)
-    db.session.commit()
-
-    return project_schema.jsonify(project), 201
+    data = json.loads(request.json)
+    created_project = Project.create(**data)
+    return jsonify(created_project), 201
 
 
 @main.route("/projects/<int:project_id>", methods=["POST"])
 def add_task_to_project(project_id: int):
     data = json.loads(request.json)
-
-    # --- Add the project number to the request data
-    data["project_id"] = project_id
-    data = json.dumps(data)
-
-    task_schema = TaskSchema()
-    task = task_schema.loads(data)
-
-    db.session.add(task)
-    db.session.commit()
-
-    return task_schema.jsonify(task), 201
+    created_task = Task.create(**data)
+    task_in_project = created_task.update(project_id=project_id)
+    return jsonify(task_in_project), 201
 
 
 @main.route("/tasks", methods=["POST"])
 def create_task():
-    data = request.json
-    task_schema = TaskSchema()
-    task = task_schema.loads(data)
-
-    db.session.add(task)
-    db.session.commit()
-
-    return task_schema.jsonify(task), 201
+    data = json.loads(request.json)
+    created_task = Task.create(**data)
+    return jsonify(created_task), 201
 
 
 # --- PUT / UPDATE ROUTES
 @main.route("/projects/<int:project_id>", methods=["PUT"])
 def update_project_by_id(project_id: int):
     data = json.loads(request.json)
-
-    project_schema = ProjectSchema()
-
-    db.session.query(Project).filter_by(id=project_id).update(data)
-    db.session.commit()
-
-    updated_project = Project.query.filter_by(id=project_id).first_or_404()
-
-    return project_schema.jsonify(updated_project)
+    updated_project = Project.get_by_id(project_id).update(**data).save()
+    return jsonify(updated_project)
 
 
 @main.route("/tasks/<int:task_id>", methods=["PUT"])
 def update_task_by_id(task_id: int):
     data = json.loads(request.json)
+    updated_task = Task.get_by_id(task_id).update(**data).save()
+    return jsonify(updated_task)
 
-    task_schema = TaskSchema()
 
-    db.session.query(Task).filter_by(id=task_id).update(data)
-    db.session.commit()
+# --- DELETE ROUTES
+@main.route("/projects/<int:project_id>", methods=["DELETE"])
+def delete_project_by_id(project_id: int):
+    Project.get_by_id(project_id).delete()
+    updated_projects = Project.query.all()
+    return jsonify(updated_projects)
 
-    updated_task = Task.query.filter_by(id=task_id).first_or_404()
 
-    return task_schema.jsonify(updated_task)
+@main.route("/tasks/<int:task_id>", methods=["DELETE"])
+def delete_task_by_id(task_id: int):
+    Task.get_by_id(task_id).delete()
+    updated_tasks = Task.query.all()
+    return jsonify(updated_tasks)
