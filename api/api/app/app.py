@@ -1,10 +1,7 @@
-from distutils.command.config import config
-from typing import Type
-from flask import Flask, Blueprint
+from flask import Flask
 from flask_cors import CORS
-from flask_sqlalchemy import SQLAlchemy
-from flask_marshmallow import Marshmallow
-from .load_test_data import load_test_data
+
+# from .load_test_data import load_test_data
 from .models import db, ma
 
 cors = CORS()
@@ -26,6 +23,7 @@ def init_app(config_filename="app.config.Config"):
 
         app.register_blueprint(main_bp)
 
-        load_test_data(db)
+        # load_test_data(db)
+        db.create_all()
 
         return app

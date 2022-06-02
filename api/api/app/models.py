@@ -7,8 +7,42 @@ db = SQLAlchemy()
 ma = Marshmallow()
 
 
+class CRUDMixin(object):
+    __table_args__ = {"extend_existing": True}
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    @classmethod
+    def get_by_id(cls, id):
+        if any(
+            (isinstance(id, str) and id.isdigit(), isinstance(id, (int, float))),
+        ):
+            return cls.query.get(int(id))
+        return None
+
+    @classmethod
+    def create(cls, **kwargs):
+        instance = cls(**kwargs)
+        return instance.save()
+
+    def update(self, commit=True, **kwargs):
+        for attr, value in kwargs.items():
+            setattr(self, attr, value)
+        return commit and self.save() or self
+
+    def save(self, commit=True):
+        db.session.add(self)
+        if commit:
+            db.session.commit()
+        return self
+
+    def delete(self, commit=True):
+        db.session.delete(self)
+        return commit and db.session.commit()
+
+
 @dataclass
-class Task(db.Model):
+class Task(CRUDMixin, db.Model):
     id: int
     name: str
     project_id: int
@@ -28,16 +62,14 @@ class Task(db.Model):
     priority = db.Column(db.Integer)
     deadline = db.Column(db.DateTime)
     # --- Relationships
-    project_id = db.Column(
-        db.Integer, db.ForeignKey("project.id"), nullable=False, default=1
-    )
+    project_id = db.Column(db.Integer, db.ForeignKey("project.id"))
 
     def __repr__(self):
         return "<Task %r>" % self.name
 
 
 @dataclass
-class Project(db.Model):
+class Project(CRUDMixin, db.Model):
     id: int
     name: str
     tasks: Task
