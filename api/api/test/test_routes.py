@@ -40,7 +40,7 @@ def given_x_objects(x: int, object_type: str, client):
         objects = random.sample(dummy_data[object_type], x)
         created_objects = []
         for object in objects:
-            data = json.dumps(object)
+            data = object
             response = client.post(f"/{object_type}", json=data)
             responses_successful.append(response.status_code in success)
             created_objects.append(response.json)
@@ -49,7 +49,7 @@ def given_x_objects(x: int, object_type: str, client):
             return created_objects
     elif x == 1:
         object = random.choice(dummy_data[object_type])
-        data = json.dumps(object)
+        data = object
         response = client.post(f"/{object_type}", json=data)
         responses_successful.append(response.status_code in success)
 
@@ -162,7 +162,7 @@ def test_create_project(client):
 
     # --- WHEN
     new_project = random.choice(dummy_projects)
-    data = json.dumps(new_project)
+    data = new_project
     response = client.post("/projects", json=data)
     created_project = response.json
 
@@ -199,7 +199,7 @@ def test_add_task_to_project(client):
 
     # --- WHEN
     new_task = random.choice(dummy_tasks)
-    data = json.dumps(new_task)
+    data = new_task
     response = client.post(f"projects/{project['id']}", json=data)
     added_task = response.json
 
@@ -225,7 +225,7 @@ def test_create_task(client):
 
     # --- WHEN
     new_task = random.choice(dummy_tasks)
-    data = json.dumps(new_task)
+    data = new_task
     response = client.post("/tasks", json=data)
     created_task = response.json
 
@@ -245,7 +245,7 @@ def test_update_project_by_id(client):
 
     # --- WHEN
     update_request = {"name": "New Name"}
-    data = json.dumps(update_request)
+    data = update_request
     response = client.put(f"/projects/{original_project['id']}", json=data)
     updated_project = response.json
 
@@ -272,7 +272,7 @@ def test_update_task(client):
 
     # --- WHEN
     update_request = {"name": "New Name"}
-    data = json.dumps(update_request)
+    data = update_request
     response = client.put(f"/tasks/{original_task['id']}", json=data)
     updated_task = response.json
 
