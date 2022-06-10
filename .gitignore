@@ -3,8 +3,32 @@ frontend/node_modules
 frontend/package-lock.json
 frontend/package.json
 frontend/ts-config.json
-.vscode/launch.json
-.gitignore
+# dependencies
+frontend/node_modules
+frontend/.pnp
+frontend/.pnp.js
+
+# testing
+frontend/coverage
+
+# production
+frontend/build
+
+# misc
+frontend/.DS_Store
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/package-lock.json
+frontend/.gitignore
+frontend/src/accurateTimer.js
+frontend/.vscode/launch.json
+frontend/.gitignore
 api/api/__init__.py
 api/api/app.py
 api/api/database.db
@@ -47,3 +71,5 @@ api/api/__pycache__/routes.cpython-39.pyc
 api/api/__pycache__/test_data.cpython-39.pyc
 api/tests/__init__.py
 api/tests/test_api.py
+.vscode/launch.json
+.gitignore
