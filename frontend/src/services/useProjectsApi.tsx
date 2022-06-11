@@ -2,9 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 
 export default function useProjectsApi() {
-  const [projects, setProjects] = useState<Project[]>([]);
   const [isQuerying, setIsQuerying] = useState<boolean>(false);
-
   // Querying location and config
   const BASE_URL: string = "http://localhost:5000";
   const url: (id?: number) => string = (id) =>
@@ -25,11 +23,12 @@ export default function useProjectsApi() {
       throw new Error(response.statusText);
     }
 
-    const responseData = await response.data;
-    setProjects(responseData);
+    const latestProjects: Project[] = await response.data;
 
     // End query
     setIsQuerying(false);
+
+    return latestProjects;
   };
 
   const get_by_id = async (id: number) => {
@@ -58,11 +57,12 @@ export default function useProjectsApi() {
       throw new Error(response.statusText);
     }
 
-    const responseData = await response.data;
+    const createdProject: Project = await response.data;
 
-    get_all();
     // End query
     setIsQuerying(false);
+
+    return createdProject;
   };
 
   const update = async (id: number, payload: Project) => {
@@ -74,10 +74,11 @@ export default function useProjectsApi() {
       throw new Error(response.statusText);
     }
 
-    const responseData = await response.data;
-    get_all();
+    const updatedProject: Project = await response.data;
     // End query
     setIsQuerying(false);
+
+    return updatedProject;
   };
 
   const remove = async (id: number) => {
@@ -89,10 +90,11 @@ export default function useProjectsApi() {
       throw new Error(response.statusText);
     }
 
-    const responseData = await response.data;
-    get_all();
+    const updatedProjects: Project[] = await response.data;
     // End query
     setIsQuerying(false);
+
+    return updatedProjects;
   };
 
   const projectsApi: any = {
@@ -104,7 +106,6 @@ export default function useProjectsApi() {
   };
 
   return {
-    projects,
     isQuerying,
     projectsApi,
   };

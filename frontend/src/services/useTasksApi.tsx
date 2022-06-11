@@ -23,7 +23,7 @@ export default function useTasksApi() {
       throw new Error(response.statusText);
     }
 
-    const latestTasks = await response.data;
+    const latestTasks: Task[] = await response.data;
     // End query
     setIsQuerying(false);
 
@@ -55,7 +55,7 @@ export default function useTasksApi() {
       throw new Error(response.statusText);
     }
 
-    const createdTask: Task[] = await response.data;
+    const createdTask: Task = await response.data;
 
     // End query
     setIsQuerying(false);
@@ -72,7 +72,7 @@ export default function useTasksApi() {
       throw new Error(response.statusText);
     }
 
-    const updatedTask = await response.data;
+    const updatedTask: Task = await response.data;
 
     // End query
     setIsQuerying(false);
@@ -90,7 +90,7 @@ export default function useTasksApi() {
     }
 
     // The api returns the updated tasks
-    const updatedTasks = await response.data;
+    const updatedTasks: Project[] = await response.data;
     // End query
     setIsQuerying(false);
 
