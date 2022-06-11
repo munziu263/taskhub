@@ -1,8 +1,8 @@
-import { Container } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Button, Container, Typography } from "@mui/material";
+import { MouseEvent, useEffect, useState } from "react";
 import "./App.css";
 import { CreateField } from "./components/CreateField";
-import { CreateTaskField } from "./components/CreateTaskField";
+import { ProjectNavBar } from "./components/ProjectNavBar";
 import { TaskTable } from "./components/TaskTable";
 import { Timer } from "./components/Timer";
 import useProjectsApi from "./services/useProjectsApi";
@@ -14,8 +14,8 @@ const DEFAULT_REST_TIME: Seconds = 5 * 60;
 // const REST_TIME = 3
 
 function App() {
-  const [projects, setProjects] = useState<Project[]>([]);
   const { projectsApi } = useProjectsApi();
+  const [currentProject, setCurrentProject] = useState<Project | null>(null);
   const [tasks, setTasks] = useState<Task[]>([]);
   const { tasksApi } = useTasksApi();
 
@@ -38,23 +38,31 @@ function App() {
     });
   };
 
-  const handleCreateProject = (newProject: string) => {
-    projectsApi.create(newProject).then((createdProject: Project) => {
-      setProjects((prevState: Project[]) => [...prevState, createdProject]);
-    });
+  const handleProjectSelect = async (
+    event: MouseEvent<HTMLButtonElement>,
+    projectID?: number
+  ) => {
+    event.preventDefault();
+    const selectedProject = await projectsApi.get_by_id(projectID);
+    projectID ? setCurrentProject(selectedProject) : setCurrentProject(null);
   };
+
+  const sx = { mx: 1, my: 2, px: 1, py: 2 };
 
   return (
     <div>
-      <Container id="App" sx={{ mx: 1, my: 2, px: 1, py: 2 }}>
+      <Container id="timer" sx={sx}>
         <Timer
           activePeriod={DEFAULT_ACTIVE_TIME}
           restPeriod={DEFAULT_REST_TIME}
           endPeriodHandler={endPeriodHandler}
         />
       </Container>
-      <Container>
-        <CreateField handleCreate={handleCreateProject} obj_type={"project"} />
+      <Container id="project-selector" sx={sx}>
+        <ProjectNavBar handleProjectSelect={handleProjectSelect} />
+      </Container>
+      <Container id="current-project" sx={sx}>
+        <Typography>{currentProject ? currentProject.name : "Home"}</Typography>
         <CreateField handleCreate={handleCreateTask} obj_type={"task"} />
         <TaskTable tasks={tasks ? tasks : []} />
       </Container>
