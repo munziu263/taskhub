@@ -1,11 +1,12 @@
 import { Container, TextField } from "@mui/material";
 import { ChangeEvent, FormEvent, useState } from "react";
 
-interface CreateTaskField {
+interface CreateField {
   handleCreate: any;
+  obj_type: string;
 }
 
-const CreateTaskField = (props: CreateTaskField) => {
+const CreateField = (props: CreateField) => {
   const [value, setValue] = useState<string>("");
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -20,17 +21,17 @@ const CreateTaskField = (props: CreateTaskField) => {
   };
 
   return (
-    <Container id={"new-task-input"}>
+    <Container id={`new-${props.obj_type}-input`}>
       <form onSubmit={handleSubmit}>
         <TextField
           autoComplete="off"
           onChange={handleChange}
           value={value}
-          label={"New task"}
+          label={`New ${props.obj_type.charAt(0) + props.obj_type.slice(1)}`}
         />
       </form>
     </Container>
   );
 };
 
-export { CreateTaskField };
+export { CreateField };
