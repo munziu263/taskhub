@@ -6,23 +6,27 @@ import {
   TableCell,
 } from "@mui/material";
 import { ChangeEvent } from "react";
-import useTasksApi from "../services/useTasksApi";
 import { TaskTableRow } from "./TaskTableRow";
 
 interface TaskTable {
   tasks: Task[];
+  handleUpdateTasks: any;
 }
 
 export const TaskTable = (props: TaskTable) => {
-  const { tasksApi } = useTasksApi();
-
   const handleComplete = (
     event: ChangeEvent<HTMLInputElement>,
     taskId: number
   ) => {
-    const response = tasksApi.update(taskId, {
-      complete: event.target.checked,
-    });
+    const oldTask: Task | undefined = props.tasks.find(
+      (task: Task) => task.id == taskId
+    );
+    if (!oldTask) {
+      console.log("Task not found");
+      return;
+    }
+    const updatedTask: Task = { ...oldTask, complete: event.target.checked };
+    props.handleUpdateTasks(updatedTask);
   };
 
   return (

@@ -53,13 +53,30 @@ export const ProjectPage = (props: ProjectPage) => {
     }
   };
 
+  const handleUpdateTasks = (updatedTask: Task) => {
+    tasksApi
+      .update(updatedTask.id, updatedTask)
+      .then((updatedTask: Task) => {
+        const updatedTasks: Task[] = tasks.map((oldTask: Task) =>
+          oldTask.id === updatedTask.id ? updatedTask : oldTask
+        );
+        setTasks(updatedTasks);
+      })
+      .catch((err: Error) => {
+        console.log(err);
+      });
+  };
+
   return (
     <Container id="current-project">
       <Typography>
         {props.currentProject ? props.currentProject.name : "Home"}
       </Typography>
       <CreateField handleCreate={handleCreateTask} obj_type={"task"} />
-      <TaskTable tasks={tasks ? tasks : []} />
+      <TaskTable
+        tasks={tasks ? tasks : []}
+        handleUpdateTasks={handleUpdateTasks}
+      />
     </Container>
   );
 };
