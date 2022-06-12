@@ -7,6 +7,7 @@ import { TaskTable } from "./TaskTable";
 
 interface ProjectPage {
   currentProject: Project | null;
+  handleTaskSelect: any;
 }
 
 export const ProjectPage = (props: ProjectPage) => {
@@ -44,7 +45,7 @@ export const ProjectPage = (props: ProjectPage) => {
         setTasks((prevState: Task[]) => [...prevState, createdTask]);
       });
     } else {
-      // add task to project (ADD FUNCTIONALITY TO API)
+      // add task to project
       projectsApi
         .create_task_in_project(newTask, props.currentProject.id)
         .then((createdTask: Task) => {
@@ -76,6 +77,7 @@ export const ProjectPage = (props: ProjectPage) => {
       <TaskTable
         tasks={tasks ? tasks : []}
         handleUpdateTasks={handleUpdateTasks}
+        handleTaskSelect={props.handleTaskSelect}
       />
     </Container>
   );

@@ -11,6 +11,7 @@ import { TaskTableRow } from "./TaskTableRow";
 interface TaskTable {
   tasks: Task[];
   handleUpdateTasks: any;
+  handleTaskSelect: any;
 }
 
 export const TaskTable = (props: TaskTable) => {
@@ -51,6 +52,9 @@ export const TaskTable = (props: TaskTable) => {
                 key={task.id}
                 handleComplete={(event: ChangeEvent<HTMLInputElement>) =>
                   handleComplete(event, task.id)
+                }
+                handleTaskSelect={(event: ChangeEvent<HTMLInputElement>) =>
+                  props.handleTaskSelect(event, task.id)
                 }
               />
             );

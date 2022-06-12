@@ -4,6 +4,7 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 interface TaskTableRow {
   task: Task;
   handleComplete: any;
+  handleTaskSelect: any;
 }
 
 export const TaskTableRow: React.FC<TaskTableRow> = (props: TaskTableRow) => {
@@ -20,7 +21,9 @@ export const TaskTableRow: React.FC<TaskTableRow> = (props: TaskTableRow) => {
       <TableCell>{props.task.estimated_time}</TableCell>
       <TableCell>
         <Button size="small">
-          <ModeEditIcon />
+          <ModeEditIcon
+            onClick={(event) => props.handleTaskSelect(event, props.task.id)}
+          />
         </Button>
       </TableCell>
     </TableRow>
