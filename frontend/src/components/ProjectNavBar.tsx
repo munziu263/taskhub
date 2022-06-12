@@ -41,6 +41,7 @@ export const ProjectNavBar = (props: ProjectNavBar) => {
           return (
             <Button
               onClick={(event) => props.handleProjectSelect(event, project.id)}
+              key={project.id}
             >
               {project.name}
             </Button>

@@ -1,102 +1,65 @@
-import {
-  TextField,
-  Typography,
-  Container,
-  Table,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TableBody,
-  TableCell,
-  Checkbox,
-  Paper,
-} from "@mui/material";
+import { Container, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import useProjectsApi from "../services/useProjectsApi";
+import useTasksApi from "../services/useTasksApi";
+import { CreateField } from "./CreateField";
+import { TaskTable } from "./TaskTable";
 
-const ProjectPage: React.FC<ProjectPageProps> = (props: ProjectPageProps) => {
-  const projectID: number = props.project.id;
-  const projectName: string = props.project.name;
-  const tasks: Task[] = props.project.tasks;
+interface ProjectPage {
+  currentProject: Project | null;
+}
 
-  const loadData: any = (task: Task) => {
-    let complete = task.complete;
-    let name = task.name;
-    let estimated_time = task.estimated_time;
-    let priority = task.priority;
-    return { complete, name, estimated_time, priority };
+export const ProjectPage = (props: ProjectPage) => {
+  const { tasksApi } = useTasksApi();
+  const { projectsApi } = useProjectsApi();
+
+  const [tasks, setTasks] = useState<Task[]>([]);
+
+  useEffect(() => {
+    if (!props.currentProject) {
+      setTasksWithoutProject();
+    } else {
+      setTasks(props.currentProject.tasks);
+    }
+  }, [props.currentProject]);
+
+  const setTasksWithoutProject = async () => {
+    tasksApi
+      .get_all()
+      .then((latestTasks: Task[]) => {
+        const filteredTasks: Task[] = latestTasks.filter(
+          (task: Task) => task.project_id === null
+        );
+        setTasks(filteredTasks);
+      })
+      .catch((err: Error) => {
+        console.log(err);
+      });
   };
 
-  const rows = tasks.map((task: Task) => loadData(task));
+  const handleCreateTask = (newTask: string) => {
+    // add task without project
+    if (props.currentProject === null) {
+      tasksApi.create(newTask).then((createdTask: Task) => {
+        setTasks((prevState: Task[]) => [...prevState, createdTask]);
+      });
+    } else {
+      // add task to project (ADD FUNCTIONALITY TO API)
+      projectsApi
+        .create_task_in_project(newTask, props.currentProject.id)
+        .then((createdTask: Task) => {
+          setTasks((prevState: Task[]) => [...prevState, createdTask]);
+        });
+    }
+  };
 
   return (
-    <Container
-      component={Paper}
-      id={"project-page-" + String(projectID)}
-      sx={{ m: "auto", px: 1, py: 2 }}
-    >
-      <Typography
-        variant="h5"
-        sx={{ mx: 1, my: 2, px: 1, py: 1, borderBottom: 1 }}
-      >
-        {projectName === null ? "Tasks" : projectName}
+    <Container id="current-project">
+      <Typography>
+        {props.currentProject ? props.currentProject.name : "Home"}
       </Typography>
-      <Container sx={{ m: "auto", px: 1, py: 3 }}>
-        <Table
-          aria-label={projectName}
-          sx={{
-            width: "auto",
-            p: 1,
-            m: "auto",
-          }}
-        >
-          <TableContainer
-            sx={{
-              width: "auto",
-              p: 2,
-              m: "auto",
-            }}
-          >
-            {/* Input field start*/}
-            <TextField
-              id="new_task"
-              name="new_task"
-              label="Add new task"
-              fullWidth
-              size="small"
-            ></TextField>
-            {/* input field end */}
-            {/* table head start*/}
-            <TableHead>
-              <TableRow>
-                <TableCell>Complete</TableCell>
-                <TableCell>Task Name</TableCell>
-                <TableCell>Estimated Time</TableCell>
-                <TableCell>Priority</TableCell>
-              </TableRow>
-            </TableHead>
-            {/* table head end */}
-            {/* table body start */}
-            <TableBody>
-              {tasks.map((task: Task, i) => {
-                return (
-                  <TableRow key={i}>
-                    <TableCell>
-                      <Checkbox checked={task.complete} />
-                    </TableCell>
-                    <TableCell>{task.name}</TableCell>
-                    <TableCell>{task.estimated_time}</TableCell>
-                    <TableCell>
-                      {task.priority ? task.priority : "Low"}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-            </TableBody>
-            {/* table body end */}
-          </TableContainer>
-        </Table>
-      </Container>
+      <CreateField handleCreate={handleCreateTask} obj_type={"task"} />
+      <TaskTable tasks={tasks ? tasks : []} />
     </Container>
   );
 };
-
-export { ProjectPage };

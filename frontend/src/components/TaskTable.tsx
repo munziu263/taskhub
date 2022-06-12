@@ -5,6 +5,8 @@ import {
   TableRow,
   TableCell,
 } from "@mui/material";
+import { ChangeEvent } from "react";
+import useTasksApi from "../services/useTasksApi";
 import { TaskTableRow } from "./TaskTableRow";
 
 interface TaskTable {
@@ -12,6 +14,17 @@ interface TaskTable {
 }
 
 export const TaskTable = (props: TaskTable) => {
+  const { tasksApi } = useTasksApi();
+
+  const handleComplete = (
+    event: ChangeEvent<HTMLInputElement>,
+    taskId: number
+  ) => {
+    const response = tasksApi.update(taskId, {
+      complete: event.target.checked,
+    });
+  };
+
   return (
     <Table>
       <TableHead>
@@ -28,7 +41,15 @@ export const TaskTable = (props: TaskTable) => {
           .slice(0)
           .reverse()
           .map((task: Task) => {
-            return <TaskTableRow task={task} key={task.id} />;
+            return (
+              <TaskTableRow
+                task={task}
+                key={task.id}
+                handleComplete={(event: ChangeEvent<HTMLInputElement>) =>
+                  handleComplete(event, task.id)
+                }
+              />
+            );
           })}
       </TableBody>
     </Table>

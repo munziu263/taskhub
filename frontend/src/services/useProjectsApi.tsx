@@ -65,6 +65,25 @@ export default function useProjectsApi() {
     return createdProject;
   };
 
+  const create_task_in_project = async (name: string, project_id: number) => {
+    const payload = { name: name };
+
+    setIsQuerying(true);
+    // Start query
+    const response = await axios.post(url(project_id), payload, options);
+
+    if (response.status !== 201) {
+      throw new Error(response.statusText);
+    }
+
+    const createdProject: Project = await response.data;
+
+    // End query
+    setIsQuerying(false);
+
+    return createdProject;
+  };
+
   const update = async (id: number, payload: Project) => {
     setIsQuerying(true);
     // Start query
@@ -101,6 +120,7 @@ export default function useProjectsApi() {
     get_all,
     get_by_id,
     create,
+    create_task_in_project,
     update,
     remove,
   };

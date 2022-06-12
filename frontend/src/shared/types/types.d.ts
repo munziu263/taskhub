@@ -1,28 +1,28 @@
-type Seconds = number
+type Seconds = number;
 
 type Task = {
   id: number;
   name: string;
-  projectID?: number;
+  project_id?: number;
   estimated_time?: Seconds;
   elapsed_time?: Seconds;
   complete: boolean;
   priority?: number;
-  deadline?: Date
-}
+  deadline?: Date;
+};
 
 type Project = {
   id: number;
   name: string;
-  tasks: Task[]
-}
+  tasks: Task[];
+};
 
 type TimerProps = {
   activePeriod: Seconds;
   restPeriod: Seconds;
   endPeriodHandler: () => void;
-}
+};
 
 type ProjectPageProps = {
-  project: Project
-}
+  project: Project;
+};
