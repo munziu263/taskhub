@@ -16,13 +16,3 @@ type Project = {
   name: string;
   tasks: Task[];
 };
-
-type TimerProps = {
-  activePeriod: Seconds;
-  restPeriod: Seconds;
-  endPeriodHandler: () => void;
-};
-
-type ProjectPageProps = {
-  project: Project;
-};

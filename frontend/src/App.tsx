@@ -49,6 +49,7 @@ function App() {
         <Timer
           activePeriod={DEFAULT_ACTIVE_TIME}
           restPeriod={DEFAULT_REST_TIME}
+          currentTaskID={currentTaskID}
           endPeriodHandler={endPeriodHandler}
         />
       </Container>
