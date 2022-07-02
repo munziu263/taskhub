@@ -10,6 +10,7 @@ interface TimerProps {
   restPeriod: Seconds;
   currentTaskID: number | null;
   endPeriodHandler: () => void;
+  handleTaskDeselect: any;
 }
 
 const Timer = (props: TimerProps) => {
@@ -56,7 +57,7 @@ const Timer = (props: TimerProps) => {
   };
   const handleRemoveTask = () => {
     handleUpdateElapsedTime();
-    setCurrentTask(null);
+    props.handleTaskDeselect();
   };
 
   isRestPeriodRef.current = isRestPeriod;
@@ -84,8 +85,8 @@ const Timer = (props: TimerProps) => {
     tasksApi.get_by_id(props.currentTaskID).then((selectedTask: Task) => {
       setCurrentTask(selectedTask);
       setStartTime(timeLeft);
-      currentTask
-        ? console.log(`Start time for ${currentTask?.name}: ${startTime}`)
+      selectedTask
+        ? console.log(`Start time for ${selectedTask?.name}: ${startTime}`)
         : console.log("No task being timed");
     });
   }, [props.currentTaskID]);
@@ -99,7 +100,7 @@ const Timer = (props: TimerProps) => {
         {props.currentTaskID && (
           <Chip
             label={currentTask ? currentTask.name : ""}
-            onDelete={() => handleRemoveTask()}
+            onDelete={handleRemoveTask}
           />
         )}
         <Button variant={isPaused ? "outlined" : "contained"} onClick={toggle}>

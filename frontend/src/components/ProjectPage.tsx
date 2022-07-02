@@ -1,20 +1,29 @@
 import { Container, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 import useProjectsApi from "../services/useProjectsApi";
 import useTasksApi from "../services/useTasksApi";
 import { CreateField } from "./CreateField";
+import { EditTaskForm } from "./EditTaskForm";
 import { TaskTable } from "./TaskTable";
+import { Timer } from "./Timer";
 
 interface ProjectPage {
   currentProject: Project | null;
-  handleTaskSelect: any;
 }
+
+const DEFAULT_ACTIVE_TIME: Seconds = 25 * 60;
+const DEFAULT_REST_TIME: Seconds = 5 * 60;
+const TEST_ACTIVE_TIME = 5;
+const TEST_REST_TIME = 3;
 
 export const ProjectPage = (props: ProjectPage) => {
   const { tasksApi } = useTasksApi();
   const { projectsApi } = useProjectsApi();
 
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [currentTaskID, setCurrentTaskID] = useState<number | null>(null);
+
+  const endPeriodHandler = () => alert("Period Ended");
 
   useEffect(() => {
     if (!props.currentProject) {
@@ -68,17 +77,43 @@ export const ProjectPage = (props: ProjectPage) => {
       });
   };
 
+  const handleTaskSelect = async (
+    event: MouseEvent<HTMLButtonElement>,
+    task_id?: number
+  ) => {
+    event.preventDefault();
+    task_id ? setCurrentTaskID(task_id) : setCurrentTaskID(null);
+  };
+
+  const handleTaskDeselect = () => {
+    setCurrentTaskID(null);
+  };
+
+  const sx = { mx: 1, my: 2, px: 1, py: 2 };
+
   return (
-    <Container id="current-project">
-      <Typography>
+    <Container id="current-project" sx={sx}>
+      <Timer
+        activePeriod={DEFAULT_ACTIVE_TIME}
+        restPeriod={DEFAULT_REST_TIME}
+        currentTaskID={currentTaskID}
+        endPeriodHandler={endPeriodHandler}
+        handleTaskDeselect={handleTaskDeselect}
+      />
+      <Typography variant="h1">
         {props.currentProject ? props.currentProject.name : "Home"}
       </Typography>
       <CreateField handleCreate={handleCreateTask} obj_type={"task"} />
       <TaskTable
         tasks={tasks ? tasks : []}
         handleUpdateTasks={handleUpdateTasks}
-        handleTaskSelect={props.handleTaskSelect}
+        handleTaskSelect={handleTaskSelect}
       />
+      {currentTaskID && (
+        <Container id="edit-current-task" sx={sx}>
+          <EditTaskForm taskID={currentTaskID}></EditTaskForm>
+        </Container>
+      )}
     </Container>
   );
 };
