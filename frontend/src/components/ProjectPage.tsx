@@ -8,7 +8,7 @@ import { TaskTable } from "./TaskTable";
 import { Timer } from "./Timer";
 
 interface ProjectPage {
-  currentProject: Project | null;
+  currentProject?: Project;
 }
 
 const DEFAULT_ACTIVE_TIME: Seconds = 25 * 60;
@@ -21,7 +21,8 @@ export const ProjectPage = (props: ProjectPage) => {
   const { projectsApi } = useProjectsApi();
 
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [currentTask, setCurrentTask] = useState<Task | null>(null);
+  const [timedTask, setTimedTask] = useState<Task>();
+  const [editedTask, setEditedTask] = useState<Task>();
 
   const endPeriodHandler = () => alert("Period Ended");
 
@@ -49,7 +50,7 @@ export const ProjectPage = (props: ProjectPage) => {
 
   const handleCreateTask = (newTask: string) => {
     // add task without project
-    if (props.currentProject === null) {
+    if (props.currentProject === undefined) {
       tasksApi.create(newTask).then((createdTask: Task) => {
         setTasks((prevState: Task[]) => [...prevState, createdTask]);
       });
@@ -77,20 +78,24 @@ export const ProjectPage = (props: ProjectPage) => {
       });
   };
 
-  const handleTaskSelect = async (
+  const handleTimedTaskSelect = (
     event: MouseEvent<HTMLButtonElement>,
-    task_id: number
+    task: Task
   ) => {
     event.preventDefault();
-    const selectedTask: Task | null | undefined = task_id
-      ? tasks.find((task: Task) => (task.id = task_id))
-      : null;
-    setCurrentTask(selectedTask ? selectedTask : null);
-    console.log(selectedTask?.name, selectedTask?.id);
+    setTimedTask(task);
   };
 
-  const handleTaskDeselect = () => {
-    setCurrentTask(null);
+  const handleTimedTaskDeselect = () => {
+    setTimedTask(undefined);
+  };
+
+  const handleEditedTaskSelect = (
+    event: MouseEvent<HTMLButtonElement>,
+    task: Task
+  ) => {
+    event.preventDefault();
+    setEditedTask(task);
   };
 
   const sx = { mx: 1, my: 2, px: 1, py: 2 };
@@ -100,9 +105,9 @@ export const ProjectPage = (props: ProjectPage) => {
       <Timer
         activePeriod={DEFAULT_ACTIVE_TIME}
         restPeriod={DEFAULT_REST_TIME}
-        currentTask={currentTask}
+        task={timedTask}
         endPeriodHandler={endPeriodHandler}
-        handleTaskDeselect={handleTaskDeselect}
+        handleTimedTaskDeselect={handleTimedTaskDeselect}
         handleUpdateTasks={handleUpdateTasks}
       />
       <Typography variant="h1">
@@ -112,13 +117,14 @@ export const ProjectPage = (props: ProjectPage) => {
       <TaskTable
         tasks={tasks ? tasks : []}
         handleUpdateTasks={handleUpdateTasks}
-        handleTaskSelect={handleTaskSelect}
+        handleTimedTaskSelect={handleTimedTaskSelect}
+        handleEditedTaskSelect={handleEditedTaskSelect}
       />
-      {currentTask && (
+      {editedTask && editedTask.project_id == props.currentProject?.id && (
         <Container id="edit-current-task" sx={sx}>
           <EditTaskForm
-            task={currentTask}
-            key={`${currentTask.id}_${currentTask.name}`}
+            task={editedTask}
+            key={`${editedTask.id}_${editedTask.name}`}
             handleUpdateTasks={handleUpdateTasks}
           ></EditTaskForm>
         </Container>

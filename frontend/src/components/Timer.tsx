@@ -3,14 +3,13 @@ import { Button, Chip, Stack, Typography } from "@mui/material";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import { accurateTimer } from "../shared/util/accurateTimer";
-import useTasksApi from "../services/useTasksApi";
 
 interface TimerProps {
   activePeriod: Seconds;
   restPeriod: Seconds;
-  currentTask: Task | null;
+  task?: Task;
   endPeriodHandler: () => void;
-  handleTaskDeselect: any;
+  handleTimedTaskDeselect: any;
   handleUpdateTasks: any;
 }
 
@@ -22,7 +21,7 @@ const Timer = (props: TimerProps) => {
   const [startTime, setStartTime] = useState<Seconds>(props.activePeriod);
 
   const [timer, setTimer] = useState<any>(
-    accurateTimer(() => setTimeLeft((timeleft) => timeleft - 1))
+    accurateTimer(() => setTimeLeft((timeLeft) => timeLeft - 1))
   );
 
   const toggle = () => {
@@ -34,20 +33,19 @@ const Timer = (props: TimerProps) => {
   };
 
   const resetTimeLeft = () => {
-    setTimeLeft(
-      isRestPeriodRef.current ? props.restPeriod : props.activePeriod
-    );
-    setStartTime(
-      isRestPeriodRef.current ? props.restPeriod : props.activePeriod
-    );
+    const nextTimePeriod: Seconds = isRestPeriodRef.current
+      ? props.restPeriod
+      : props.activePeriod;
+    setTimeLeft(nextTimePeriod);
+    setStartTime(nextTimePeriod);
   };
 
   const handleUpdateElapsedTime = () => {
-    if (props.currentTask) {
+    if (props.task) {
       const updatedTask: Task = {
-        ...props.currentTask,
-        elapsed_time: props.currentTask.elapsed_time
-          ? props.currentTask.elapsed_time + (startTime - timeLeft)
+        ...props.task,
+        elapsed_time: props.task.elapsed_time
+          ? props.task.elapsed_time + (startTime - timeLeft)
           : startTime - timeLeft,
       };
       props.handleUpdateTasks(updatedTask);
@@ -57,7 +55,7 @@ const Timer = (props: TimerProps) => {
 
   const handleRemoveTask = () => {
     handleUpdateElapsedTime();
-    props.handleTaskDeselect();
+    props.handleTimedTaskDeselect();
   };
 
   isRestPeriodRef.current = isRestPeriod;
@@ -66,6 +64,7 @@ const Timer = (props: TimerProps) => {
       timer.run();
     } else {
       timer.stop();
+      handleUpdateElapsedTime();
     }
   }, [isPaused, timer]);
 
@@ -88,9 +87,9 @@ const Timer = (props: TimerProps) => {
         <Typography variant="h1">
           {Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, "0")}
         </Typography>
-        {props.currentTask && (
+        {props.task && (
           <Chip
-            label={props.currentTask ? props.currentTask.name : ""}
+            label={props.task ? props.task.name : ""}
             onDelete={handleRemoveTask}
           />
         )}

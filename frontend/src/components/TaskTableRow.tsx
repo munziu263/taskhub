@@ -1,10 +1,12 @@
 import { Button, Checkbox, TableCell, TableRow } from "@mui/material";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 
 interface TaskTableRow {
   task: Task;
   handleComplete: any;
-  handleTaskSelect: any;
+  handleTimedTaskSelect: any;
+  handleEditedTaskSelect: any;
 }
 
 export const TaskTableRow: React.FC<TaskTableRow> = (props: TaskTableRow) => {
@@ -22,7 +24,12 @@ export const TaskTableRow: React.FC<TaskTableRow> = (props: TaskTableRow) => {
       <TableCell>
         <Button size="small">
           <ModeEditIcon
-            onClick={(event) => props.handleTaskSelect(event, props.task.id)}
+            onClick={(event) => props.handleEditedTaskSelect(event, props.task)}
+          />
+        </Button>
+        <Button size="small">
+          <PlayArrowIcon
+            onClick={(event) => props.handleTimedTaskSelect(event, props.task)}
           />
         </Button>
       </TableCell>

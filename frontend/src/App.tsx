@@ -7,7 +7,7 @@ import useProjectsApi from "./services/useProjectsApi";
 
 function App() {
   const { projectsApi } = useProjectsApi();
-  const [currentProject, setCurrentProject] = useState<Project | null>(null);
+  const [currentProject, setCurrentProject] = useState<Project>();
 
   const handleProjectSelect = async (
     event: MouseEvent<HTMLButtonElement>,
@@ -15,7 +15,9 @@ function App() {
   ) => {
     event.preventDefault();
     const selectedProject: Project = await projectsApi.get_by_id(project_id);
-    project_id ? setCurrentProject(selectedProject) : setCurrentProject(null);
+    project_id
+      ? setCurrentProject(selectedProject)
+      : setCurrentProject(undefined);
   };
 
   const sx = { mx: 1, my: 2, px: 1, py: 2 };

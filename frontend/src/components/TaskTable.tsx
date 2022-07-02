@@ -11,7 +11,8 @@ import { TaskTableRow } from "./TaskTableRow";
 interface TaskTable {
   tasks: Task[];
   handleUpdateTasks: any;
-  handleTaskSelect: any;
+  handleTimedTaskSelect: any;
+  handleEditedTaskSelect: any;
 }
 
 export const TaskTable = (props: TaskTable) => {
@@ -53,9 +54,12 @@ export const TaskTable = (props: TaskTable) => {
                 handleComplete={(event: ChangeEvent<HTMLInputElement>) =>
                   handleComplete(event, task.id)
                 }
-                handleTaskSelect={(event: ChangeEvent<HTMLInputElement>) =>
-                  props.handleTaskSelect(event, task.id)
+                handleTimedTaskSelect={(event: ChangeEvent<HTMLInputElement>) =>
+                  props.handleTimedTaskSelect(event, task)
                 }
+                handleEditedTaskSelect={(
+                  event: ChangeEvent<HTMLInputElement>
+                ) => props.handleEditedTaskSelect(event, task)}
               />
             );
           })}
