@@ -8,9 +8,10 @@ import useTasksApi from "../services/useTasksApi";
 interface TimerProps {
   activePeriod: Seconds;
   restPeriod: Seconds;
-  currentTaskID: number | null;
+  currentTask: Task | null;
   endPeriodHandler: () => void;
   handleTaskDeselect: any;
+  handleUpdateTasks: any;
 }
 
 const Timer = (props: TimerProps) => {
@@ -24,16 +25,14 @@ const Timer = (props: TimerProps) => {
     accurateTimer(() => setTimeLeft((timeleft) => timeleft - 1))
   );
 
-  const { tasksApi } = useTasksApi();
-
-  const [currentTask, setCurrentTask] = useState<Task | null>();
-
   const toggle = () => {
     setIsPaused((isPaused) => !isPaused);
   };
+
   const toggleRestPeriod = () => {
     setIsRestPeriod((isRestPeriod) => !isRestPeriod);
   };
+
   const resetTimeLeft = () => {
     setTimeLeft(
       isRestPeriodRef.current ? props.restPeriod : props.activePeriod
@@ -44,17 +43,18 @@ const Timer = (props: TimerProps) => {
   };
 
   const handleUpdateElapsedTime = () => {
-    if (currentTask) {
+    if (props.currentTask) {
       const updatedTask: Task = {
-        ...currentTask,
-        elapsed_time: currentTask.elapsed_time
-          ? currentTask.elapsed_time + (startTime - timeLeft)
+        ...props.currentTask,
+        elapsed_time: props.currentTask.elapsed_time
+          ? props.currentTask.elapsed_time + (startTime - timeLeft)
           : startTime - timeLeft,
       };
-      tasksApi.update(currentTask.id, updatedTask);
+      props.handleUpdateTasks(updatedTask);
       setStartTime(timeLeft);
     }
   };
+
   const handleRemoveTask = () => {
     handleUpdateElapsedTime();
     props.handleTaskDeselect();
@@ -71,6 +71,7 @@ const Timer = (props: TimerProps) => {
 
   useEffect(() => {
     if (timeLeft === 0) {
+      handleUpdateElapsedTime();
       toggle();
       toggleRestPeriod();
       props.endPeriodHandler();
@@ -81,25 +82,15 @@ const Timer = (props: TimerProps) => {
     resetTimeLeft();
   }, [isRestPeriod]);
 
-  useEffect(() => {
-    tasksApi.get_by_id(props.currentTaskID).then((selectedTask: Task) => {
-      setCurrentTask(selectedTask);
-      setStartTime(timeLeft);
-      selectedTask
-        ? console.log(`Start time for ${selectedTask?.name}: ${startTime}`)
-        : console.log("No task being timed");
-    });
-  }, [props.currentTaskID]);
-
   return (
     <div id="timer-display">
       <Stack spacing={2} alignItems="center">
         <Typography variant="h1">
           {Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, "0")}
         </Typography>
-        {props.currentTaskID && (
+        {props.currentTask && (
           <Chip
-            label={currentTask ? currentTask.name : ""}
+            label={props.currentTask ? props.currentTask.name : ""}
             onDelete={handleRemoveTask}
           />
         )}

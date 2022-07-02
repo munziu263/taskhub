@@ -49,7 +49,7 @@ export const TaskTable = (props: TaskTable) => {
             return (
               <TaskTableRow
                 task={task}
-                key={task.id}
+                key={`${task.id}_${task.name}`}
                 handleComplete={(event: ChangeEvent<HTMLInputElement>) =>
                   handleComplete(event, task.id)
                 }

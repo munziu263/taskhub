@@ -21,7 +21,7 @@ export const ProjectPage = (props: ProjectPage) => {
   const { projectsApi } = useProjectsApi();
 
   const [tasks, setTasks] = useState<Task[]>([]);
-  const [currentTaskID, setCurrentTaskID] = useState<number | null>(null);
+  const [currentTask, setCurrentTask] = useState<Task | null>(null);
 
   const endPeriodHandler = () => alert("Period Ended");
 
@@ -79,14 +79,18 @@ export const ProjectPage = (props: ProjectPage) => {
 
   const handleTaskSelect = async (
     event: MouseEvent<HTMLButtonElement>,
-    task_id?: number
+    task_id: number
   ) => {
     event.preventDefault();
-    task_id ? setCurrentTaskID(task_id) : setCurrentTaskID(null);
+    const selectedTask: Task | null | undefined = task_id
+      ? tasks.find((task: Task) => (task.id = task_id))
+      : null;
+    setCurrentTask(selectedTask ? selectedTask : null);
+    console.log(selectedTask?.name, selectedTask?.id);
   };
 
   const handleTaskDeselect = () => {
-    setCurrentTaskID(null);
+    setCurrentTask(null);
   };
 
   const sx = { mx: 1, my: 2, px: 1, py: 2 };
@@ -96,9 +100,10 @@ export const ProjectPage = (props: ProjectPage) => {
       <Timer
         activePeriod={DEFAULT_ACTIVE_TIME}
         restPeriod={DEFAULT_REST_TIME}
-        currentTaskID={currentTaskID}
+        currentTask={currentTask}
         endPeriodHandler={endPeriodHandler}
         handleTaskDeselect={handleTaskDeselect}
+        handleUpdateTasks={handleUpdateTasks}
       />
       <Typography variant="h1">
         {props.currentProject ? props.currentProject.name : "Home"}
@@ -109,9 +114,13 @@ export const ProjectPage = (props: ProjectPage) => {
         handleUpdateTasks={handleUpdateTasks}
         handleTaskSelect={handleTaskSelect}
       />
-      {currentTaskID && (
+      {currentTask && (
         <Container id="edit-current-task" sx={sx}>
-          <EditTaskForm taskID={currentTaskID}></EditTaskForm>
+          <EditTaskForm
+            task={currentTask}
+            key={`${currentTask.id}_${currentTask.name}`}
+            handleUpdateTasks={handleUpdateTasks}
+          ></EditTaskForm>
         </Container>
       )}
     </Container>
