@@ -41,12 +41,14 @@ const Timer = (props: TimerProps) => {
   };
 
   const handleUpdateElapsedTime = () => {
-    if (props.task) {
+    if (props.task && !isRestPeriodRef.current) {
+      const elapsedTime: Seconds = startTime - timeLeft;
+      console.log(`Time Elapsed: ${elapsedTime}`);
       const updatedTask: Task = {
         ...props.task,
         elapsed_time: props.task.elapsed_time
-          ? props.task.elapsed_time + (startTime - timeLeft)
-          : startTime - timeLeft,
+          ? props.task.elapsed_time + elapsedTime
+          : elapsedTime,
       };
       props.handleUpdateTasks(updatedTask);
       setStartTime(timeLeft);
@@ -64,11 +66,11 @@ const Timer = (props: TimerProps) => {
       timer.run();
     } else {
       timer.stop();
-      handleUpdateElapsedTime();
     }
   }, [isPaused, timer]);
 
   useEffect(() => {
+    // When the timer runs out
     if (timeLeft === 0) {
       handleUpdateElapsedTime();
       toggle();
@@ -80,6 +82,14 @@ const Timer = (props: TimerProps) => {
   useEffect(() => {
     resetTimeLeft();
   }, [isRestPeriod]);
+
+  useEffect(() => {
+    if (props.task) {
+      setStartTime(timeLeft);
+    }
+
+    console.log(`${props.task?.name}: Start time - ${startTime}`);
+  }, [props.task]);
 
   return (
     <div id="timer-display">
