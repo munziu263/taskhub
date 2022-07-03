@@ -98,6 +98,10 @@ export const ProjectPage = (props: ProjectPage) => {
     setEditedTask(task);
   };
 
+  const handleEditedTaskDeselect = () => {
+    setEditedTask(undefined);
+  };
+
   const sx = { mx: 1, my: 2, px: 1, py: 2 };
 
   return (
@@ -126,6 +130,7 @@ export const ProjectPage = (props: ProjectPage) => {
             task={editedTask}
             key={`${editedTask.id}_${editedTask.name}`}
             handleUpdateTasks={handleUpdateTasks}
+            handleEditedTaskDeselect={handleEditedTaskDeselect}
           ></EditTaskForm>
         </Container>
       )}
