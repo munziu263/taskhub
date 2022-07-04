@@ -16,13 +16,10 @@ const UpdateTaskField = (
 
   if (isEditable) {
     return (
-      <form
-        onSubmit={() => handleSubmit}
-        style={{ display: "flex", alignItems: "center" }}
-      >
+      <form onSubmit={() => handleSubmit}>
         <TextField value={value} onChange={() => handleChange} />
-        <Typography style={{ display: "none" }} />
-        <Button size="small" onClick={toggleIsEditable}>
+        <Typography />
+        <Button onClick={toggleIsEditable}>
           <DoneIcon />
         </Button>
       </form>
@@ -30,11 +27,9 @@ const UpdateTaskField = (
   }
 
   return (
-    <div style={{ display: "flex", alignItems: "center" }}>
-      <Typography variant="h4" display="inline">
-        {value}
-      </Typography>
-      <Button size="small" onClick={toggleIsEditable}>
+    <div>
+      <Typography>{value}</Typography>
+      <Button onClick={toggleIsEditable}>
         <ModeEditIcon />
       </Button>
     </div>

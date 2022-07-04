@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { Button, Chip, Stack, Typography } from "@mui/material";
+import { Avatar, Button, Chip, Grid, Paper, Typography } from "@mui/material";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import { accurateTimer } from "../shared/util/accurateTimer";
+import { convertTypeAcquisitionFromJson } from "typescript";
+import { Task } from "@mui/icons-material";
 
 interface TimerProps {
   activePeriod: Seconds;
@@ -93,20 +95,29 @@ const Timer = (props: TimerProps) => {
 
   return (
     <div id="timer-display">
-      <Stack spacing={2} alignItems="center">
-        <Typography variant="h1">
-          {Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, "0")}
-        </Typography>
-        {props.task && (
-          <Chip
-            label={props.task ? props.task.name : ""}
-            onDelete={handleRemoveTask}
-          />
-        )}
-        <Button variant={isPaused ? "outlined" : "contained"} onClick={toggle}>
-          {isPaused ? <PlayArrowIcon /> : <PauseIcon />}
-        </Button>
-      </Stack>
+      <Grid container spacing={2} direction="column">
+        <Grid item>
+          {props.task && (
+            <Chip
+              label={props.task ? props.task.name : ""}
+              onDelete={handleRemoveTask}
+              size="medium"
+              color="warning"
+              avatar={<Avatar>{props.task.project_id}</Avatar>}
+            />
+          )}
+        </Grid>
+        <Grid item>
+          <Typography variant="h1">
+            {Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, "0")}
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Button onClick={toggle} variant="contained" color="secondary">
+            {isPaused ? <PlayArrowIcon /> : <PauseIcon />}
+          </Button>
+        </Grid>
+      </Grid>
     </div>
   );
 };

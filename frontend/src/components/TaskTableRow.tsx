@@ -22,13 +22,15 @@ export const TaskTableRow: React.FC<TaskTableRow> = (props: TaskTableRow) => {
       <TableCell>{props.task.elapsed_time}</TableCell>
       <TableCell>{props.task.estimated_time}</TableCell>
       <TableCell>
-        <Button size="small">
+        <Button>
           <ModeEditIcon
+            color="secondary"
             onClick={(event) => props.handleEditedTaskSelect(event, props.task)}
           />
         </Button>
-        <Button size="small">
+        <Button>
           <PlayArrowIcon
+            color="secondary"
             onClick={(event) => props.handleTimedTaskSelect(event, props.task)}
           />
         </Button>

@@ -21,16 +21,15 @@ const CreateField = (props: CreateField) => {
   };
 
   return (
-    <Container id={`new-${props.obj_type}-input`}>
-      <form onSubmit={handleSubmit}>
-        <TextField
-          autoComplete="off"
-          onChange={handleChange}
-          value={value}
-          label={`New ${props.obj_type.charAt(0) + props.obj_type.slice(1)}`}
-        />
-      </form>
-    </Container>
+    <form onSubmit={handleSubmit}>
+      <TextField
+        autoComplete="off"
+        onChange={handleChange}
+        value={value}
+        label={`New ${props.obj_type.charAt(0) + props.obj_type.slice(1)}`}
+        variant="filled"
+      />
+    </form>
   );
 };
 

@@ -4,6 +4,7 @@ import {
   TableHead,
   TableRow,
   TableCell,
+  Paper,
 } from "@mui/material";
 import { ChangeEvent } from "react";
 import { TaskTableRow } from "./TaskTableRow";
@@ -32,38 +33,40 @@ export const TaskTable = (props: TaskTable) => {
   };
 
   return (
-    <Table>
-      <TableHead>
-        <TableRow>
-          <TableCell>Complete</TableCell>
-          <TableCell>Name</TableCell>
-          <TableCell>Time Elapsed</TableCell>
-          <TableCell>Estimated Time</TableCell>
-          <TableCell></TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {props.tasks
-          .slice(0)
-          .reverse()
-          .map((task: Task) => {
-            return (
-              <TaskTableRow
-                task={task}
-                key={`${task.id}_${task.name}`}
-                handleComplete={(event: ChangeEvent<HTMLInputElement>) =>
-                  handleComplete(event, task.id)
-                }
-                handleTimedTaskSelect={(event: ChangeEvent<HTMLInputElement>) =>
-                  props.handleTimedTaskSelect(event, task)
-                }
-                handleEditedTaskSelect={(
-                  event: ChangeEvent<HTMLInputElement>
-                ) => props.handleEditedTaskSelect(event, task)}
-              />
-            );
-          })}
-      </TableBody>
-    </Table>
+    <Paper sx={{ p: 1 }}>
+      <Table>
+        <TableHead>
+          <TableRow>
+            <TableCell>Complete</TableCell>
+            <TableCell>Name</TableCell>
+            <TableCell>Time Elapsed</TableCell>
+            <TableCell>Estimated Time</TableCell>
+            <TableCell></TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {props.tasks
+            .slice(0)
+            .reverse()
+            .map((task: Task) => {
+              return (
+                <TaskTableRow
+                  task={task}
+                  key={`${task.id}_${task.name}`}
+                  handleComplete={(event: ChangeEvent<HTMLInputElement>) =>
+                    handleComplete(event, task.id)
+                  }
+                  handleTimedTaskSelect={(
+                    event: ChangeEvent<HTMLInputElement>
+                  ) => props.handleTimedTaskSelect(event, task)}
+                  handleEditedTaskSelect={(
+                    event: ChangeEvent<HTMLInputElement>
+                  ) => props.handleEditedTaskSelect(event, task)}
+                />
+              );
+            })}
+        </TableBody>
+      </Table>
+    </Paper>
   );
 };

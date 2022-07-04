@@ -1,4 +1,5 @@
-import { Container, Typography } from "@mui/material";
+import { CurrencyYenTwoTone } from "@mui/icons-material";
+import { Container, Grid, Typography } from "@mui/material";
 import { MouseEvent, useEffect, useState } from "react";
 import useProjectsApi from "../services/useProjectsApi";
 import useTasksApi from "../services/useTasksApi";
@@ -9,6 +10,7 @@ import { Timer } from "./Timer";
 
 interface ProjectPage {
   currentProject?: Project;
+  handleProjectSelect: any;
 }
 
 const DEFAULT_ACTIVE_TIME: Seconds = 25 * 60;
@@ -102,38 +104,45 @@ export const ProjectPage = (props: ProjectPage) => {
     setEditedTask(undefined);
   };
 
-  const sx = { mx: 1, my: 2, px: 1, py: 2 };
-
   return (
-    <Container id="current-project" sx={sx}>
-      <Timer
-        activePeriod={DEFAULT_ACTIVE_TIME}
-        restPeriod={DEFAULT_REST_TIME}
-        task={timedTask}
-        endPeriodHandler={endPeriodHandler}
-        handleTimedTaskDeselect={handleTimedTaskDeselect}
-        handleUpdateTasks={handleUpdateTasks}
-      />
-      <Typography variant="h1">
-        {props.currentProject ? props.currentProject.name : "Home"}
-      </Typography>
-      <CreateField handleCreate={handleCreateTask} obj_type={"task"} />
-      <TaskTable
-        tasks={tasks ? tasks : []}
-        handleUpdateTasks={handleUpdateTasks}
-        handleTimedTaskSelect={handleTimedTaskSelect}
-        handleEditedTaskSelect={handleEditedTaskSelect}
-      />
+    <Grid container spacing={2} direction="column">
+      <Grid item>
+        <Timer
+          activePeriod={DEFAULT_ACTIVE_TIME}
+          restPeriod={DEFAULT_REST_TIME}
+          task={timedTask}
+          endPeriodHandler={endPeriodHandler}
+          handleTimedTaskDeselect={handleTimedTaskDeselect}
+          handleUpdateTasks={handleUpdateTasks}
+        />
+      </Grid>
+      <Grid item>
+        <Typography>
+          {props.currentProject ? props.currentProject.name : "Home"}
+        </Typography>
+      </Grid>
+      <Grid item>
+        <CreateField handleCreate={handleCreateTask} obj_type={"task"} />
+      </Grid>
+      <Grid item>
+        <TaskTable
+          tasks={tasks ? tasks : []}
+          handleUpdateTasks={handleUpdateTasks}
+          handleTimedTaskSelect={handleTimedTaskSelect}
+          handleEditedTaskSelect={handleEditedTaskSelect}
+        />
+      </Grid>
       {editedTask && editedTask.project_id == props.currentProject?.id && (
-        <Container id="edit-current-task" sx={sx}>
+        <Grid item id="edit-current-task">
           <EditTaskForm
             task={editedTask}
             key={`${editedTask.id}_${editedTask.name}`}
             handleUpdateTasks={handleUpdateTasks}
             handleEditedTaskDeselect={handleEditedTaskDeselect}
+            handleProjectSelect={props.handleProjectSelect}
           ></EditTaskForm>
-        </Container>
+        </Grid>
       )}
-    </Container>
+    </Grid>
   );
 };

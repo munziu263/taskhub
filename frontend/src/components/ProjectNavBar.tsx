@@ -1,4 +1,4 @@
-import { Button, Container } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import useProjectsApi from "../services/useProjectsApi";
 import { CreateField } from "./CreateField";
@@ -29,24 +29,35 @@ export const ProjectNavBar = (props: ProjectNavBar) => {
   };
 
   return (
-    <Container id="project-selector">
-      <CreateField handleCreate={handleCreateProject} obj_type={"project"} />
-      <Button onClick={(event) => props.handleProjectSelect(event)}>
-        Home
-      </Button>
+    <Grid container id="project-selector" direction="column">
+      <Grid item>
+        <CreateField handleCreate={handleCreateProject} obj_type={"project"} />
+      </Grid>
+      <Grid item>
+        <Button
+          onClick={(event) => props.handleProjectSelect(event)}
+          color="info"
+        >
+          Home
+        </Button>
+      </Grid>
       {projects
         .slice(0)
         .reverse()
         .map((project: Project) => {
           return (
-            <Button
-              onClick={(event) => props.handleProjectSelect(event, project.id)}
-              key={project.id}
-            >
-              {project.name}
-            </Button>
+            <Grid item key={project.id}>
+              <Button
+                onClick={(event) =>
+                  props.handleProjectSelect(event, project.id)
+                }
+                color="secondary"
+              >
+                {project.name}
+              </Button>
+            </Grid>
           );
         })}
-    </Container>
+    </Grid>
   );
 };
