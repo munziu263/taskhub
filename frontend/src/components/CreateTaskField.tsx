@@ -1,4 +1,4 @@
-import { Container, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import { ChangeEvent, FormEvent, useState } from "react";
 
 interface CreateTaskField {
@@ -20,16 +20,14 @@ const CreateTaskField = (props: CreateTaskField) => {
   };
 
   return (
-    <Container id={"new-task-input"}>
-      <form onSubmit={handleSubmit}>
-        <TextField
-          autoComplete="off"
-          onChange={handleChange}
-          value={value}
-          label={"New task"}
-        />
-      </form>
-    </Container>
+    <form onSubmit={handleSubmit}>
+      <TextField
+        autoComplete="off"
+        onChange={handleChange}
+        value={value}
+        label={"New task"}
+      />
+    </form>
   );
 };
 

@@ -28,6 +28,8 @@ const CreateField = (props: CreateField) => {
         value={value}
         label={`New ${props.obj_type.charAt(0) + props.obj_type.slice(1)}`}
         variant="filled"
+        fullWidth
+        color="secondary"
       />
     </form>
   );

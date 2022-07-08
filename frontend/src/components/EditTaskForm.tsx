@@ -29,8 +29,8 @@ export const EditTaskForm = (props: EditTaskForm) => {
   return (
     props.task && (
       <form onSubmit={handleSubmit}>
-        <Grid container>
-          <Grid item>
+        <Grid container spacing={2} gridTemplateColumns="repeat(3, 1fr)">
+          <Grid item xs={4}>
             <TextField
               id="name-input"
               name="name"
@@ -38,9 +38,10 @@ export const EditTaskForm = (props: EditTaskForm) => {
               type="text"
               value={taskValues.name}
               onChange={handleChange}
+              fullWidth
             />
           </Grid>
-          <Grid item>
+          <Grid item xs={4}>
             <TextField
               id="project-id-input"
               name="project_id"
@@ -48,9 +49,10 @@ export const EditTaskForm = (props: EditTaskForm) => {
               type="number"
               value={taskValues.project_id}
               onChange={handleChange}
+              fullWidth
             />
           </Grid>
-          <Grid item>
+          <Grid item xs={4}>
             {" "}
             <TextField
               id="elapsed-time-input"
@@ -59,9 +61,10 @@ export const EditTaskForm = (props: EditTaskForm) => {
               type="number"
               value={taskValues.elapsed_time}
               onChange={handleChange}
+              fullWidth
             />
           </Grid>
-          <Grid item>
+          <Grid item xs={4}>
             <TextField
               id="estimated-time-input"
               name="estimated_time"
@@ -69,19 +72,22 @@ export const EditTaskForm = (props: EditTaskForm) => {
               type="number"
               value={taskValues.estimated_time ? taskValues.estimated_time : 0}
               onChange={handleChange}
+              fullWidth
             />
           </Grid>
-          <Grid item>
+          <Grid item xs={4}>
             <TextField
               id="deadline-input"
               name="deadline"
               label="Deadline"
               type="date"
-              value={taskValues.deadline ? taskValues.deadline : 0}
+              InputLabelProps={{ shrink: true }}
+              // value={taskValues.deadline ? taskValues.deadline : undefined}
               onChange={handleChange}
+              fullWidth
             />
           </Grid>
-          <Grid item>
+          <Grid item xs={4}>
             <TextField
               id="priority-input"
               name="priority"
@@ -89,10 +95,18 @@ export const EditTaskForm = (props: EditTaskForm) => {
               type="number"
               value={taskValues.priority ? taskValues.priority : 0}
               onChange={handleChange}
+              fullWidth
             />
           </Grid>
-          <Grid item>
-            <Button type="submit">Submit</Button>
+          <Grid item xs={12}>
+            <Button
+              type="submit"
+              color="secondary"
+              fullWidth
+              variant="contained"
+            >
+              Submit
+            </Button>
           </Grid>
         </Grid>
       </form>

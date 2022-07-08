@@ -29,7 +29,13 @@ export const ProjectNavBar = (props: ProjectNavBar) => {
   };
 
   return (
-    <Grid container id="project-selector" direction="column">
+    <Grid
+      container
+      id="project-selector"
+      direction="column"
+      padding={1}
+      spacing={1}
+    >
       <Grid item>
         <CreateField handleCreate={handleCreateProject} obj_type={"project"} />
       </Grid>
@@ -37,6 +43,8 @@ export const ProjectNavBar = (props: ProjectNavBar) => {
         <Button
           onClick={(event) => props.handleProjectSelect(event)}
           color="info"
+          fullWidth
+          style={{ justifyContent: "flex-start" }}
         >
           Home
         </Button>
@@ -52,6 +60,8 @@ export const ProjectNavBar = (props: ProjectNavBar) => {
                   props.handleProjectSelect(event, project.id)
                 }
                 color="secondary"
+                fullWidth
+                style={{ justifyContent: "flex-start" }}
               >
                 {project.name}
               </Button>

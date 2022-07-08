@@ -94,31 +94,37 @@ const Timer = (props: TimerProps) => {
   }, [props.task]);
 
   return (
-    <div id="timer-display">
-      <Grid container spacing={2} direction="column">
-        <Grid item>
-          {props.task && (
-            <Chip
-              label={props.task ? props.task.name : ""}
-              onDelete={handleRemoveTask}
-              size="medium"
-              color="warning"
-              avatar={<Avatar>{props.task.project_id}</Avatar>}
-            />
-          )}
-        </Grid>
-        <Grid item>
-          <Typography variant="h1">
-            {Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, "0")}
-          </Typography>
-        </Grid>
-        <Grid item>
-          <Button onClick={toggle} variant="contained" color="secondary">
-            {isPaused ? <PlayArrowIcon /> : <PauseIcon />}
-          </Button>
-        </Grid>
+    <Grid
+      id="timer-display"
+      container
+      spacing={2}
+      padding={6}
+      direction="column"
+      alignItems="center"
+      justifyContent="space-around"
+    >
+      <Grid item>
+        {props.task && (
+          <Chip
+            label={props.task ? props.task.name : ""}
+            onDelete={handleRemoveTask}
+            size="medium"
+            color="warning"
+            avatar={<Avatar>{props.task.project_id}</Avatar>}
+          />
+        )}
       </Grid>
-    </div>
+      <Grid item>
+        <Typography variant="h1">
+          {Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, "0")}
+        </Typography>
+      </Grid>
+      <Grid item>
+        <Button onClick={toggle} variant="contained" color="secondary">
+          {isPaused ? <PlayArrowIcon /> : <PauseIcon />}
+        </Button>
+      </Grid>
+    </Grid>
   );
 };
 

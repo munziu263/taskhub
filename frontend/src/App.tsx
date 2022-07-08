@@ -55,14 +55,14 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box sx={{ width: "100%", padding: 2 }}>
-        <Grid container spacing={2}>
-          <Grid item xs={2}>
-            <Paper elevation={1}>
+      <Box>
+        <Grid container>
+          <Grid item xs={1.5}>
+            <Paper elevation={1} sx={{ height: "100%" }}>
               <ProjectNavBar handleProjectSelect={handleProjectSelect} />
             </Paper>
           </Grid>
-          <Grid item xs={10}>
+          <Grid item xs={10.5}>
             <ProjectPage
               currentProject={currentProject}
               handleProjectSelect={handleProjectSelect}

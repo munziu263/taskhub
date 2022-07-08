@@ -7,6 +7,7 @@ interface TaskTableRow {
   handleComplete: any;
   handleTimedTaskSelect: any;
   handleEditedTaskSelect: any;
+  editedTaskID?: number;
 }
 
 export const TaskTableRow: React.FC<TaskTableRow> = (props: TaskTableRow) => {
@@ -16,6 +17,7 @@ export const TaskTableRow: React.FC<TaskTableRow> = (props: TaskTableRow) => {
         <Checkbox
           onChange={(event) => props.handleComplete(event, props.task.id)}
           checked={props.task.complete}
+          color="success"
         />
       </TableCell>
       <TableCell>{props.task.name}</TableCell>

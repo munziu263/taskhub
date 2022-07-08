@@ -14,6 +14,7 @@ interface TaskTable {
   handleUpdateTasks: any;
   handleTimedTaskSelect: any;
   handleEditedTaskSelect: any;
+  editedTaskID?: number;
 }
 
 export const TaskTable = (props: TaskTable) => {
@@ -51,6 +52,7 @@ export const TaskTable = (props: TaskTable) => {
             .map((task: Task) => {
               return (
                 <TaskTableRow
+                  editedTaskID={props.editedTaskID}
                   task={task}
                   key={`${task.id}_${task.name}`}
                   handleComplete={(event: ChangeEvent<HTMLInputElement>) =>

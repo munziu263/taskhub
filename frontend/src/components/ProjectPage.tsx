@@ -1,5 +1,5 @@
 import { CurrencyYenTwoTone } from "@mui/icons-material";
-import { Container, Grid, Typography } from "@mui/material";
+import { Collapse, Container, Grid, Typography } from "@mui/material";
 import { MouseEvent, useEffect, useState } from "react";
 import useProjectsApi from "../services/useProjectsApi";
 import useTasksApi from "../services/useTasksApi";
@@ -105,8 +105,49 @@ export const ProjectPage = (props: ProjectPage) => {
   };
 
   return (
-    <Grid container spacing={2} direction="column">
-      <Grid item>
+    <Grid container direction="row" padding={2} spacing={1} alignItems="center">
+      <Grid item xs={8}>
+        <Grid container direction="column" spacing={2} padding={1}>
+          <Grid item>
+            <Typography variant="h2">
+              {props.currentProject ? props.currentProject.name : "Home"}
+            </Typography>
+          </Grid>
+          <Grid item>
+            <CreateField handleCreate={handleCreateTask} obj_type={"task"} />
+          </Grid>
+          <Grid item>
+            <TaskTable
+              editedTaskID={editedTask?.id}
+              tasks={tasks ? tasks : []}
+              handleUpdateTasks={handleUpdateTasks}
+              handleTimedTaskSelect={handleTimedTaskSelect}
+              handleEditedTaskSelect={handleEditedTaskSelect}
+            />
+          </Grid>
+          <Grid item id="edit-current-task">
+            <Collapse
+              in={
+                editedTask && editedTask.project_id == props.currentProject?.id
+              }
+              orientation="vertical"
+            >
+              {editedTask &&
+                editedTask.project_id == props.currentProject?.id && (
+                  <EditTaskForm
+                    task={editedTask}
+                    key={`${editedTask.id}_${editedTask.name}`}
+                    handleUpdateTasks={handleUpdateTasks}
+                    handleEditedTaskDeselect={handleEditedTaskDeselect}
+                    handleProjectSelect={props.handleProjectSelect}
+                  ></EditTaskForm>
+                )}
+            </Collapse>
+          </Grid>
+        </Grid>
+      </Grid>
+
+      <Grid item xs={4} sx={{ height: "100%" }}>
         <Timer
           activePeriod={DEFAULT_ACTIVE_TIME}
           restPeriod={DEFAULT_REST_TIME}
@@ -116,33 +157,6 @@ export const ProjectPage = (props: ProjectPage) => {
           handleUpdateTasks={handleUpdateTasks}
         />
       </Grid>
-      <Grid item>
-        <Typography>
-          {props.currentProject ? props.currentProject.name : "Home"}
-        </Typography>
-      </Grid>
-      <Grid item>
-        <CreateField handleCreate={handleCreateTask} obj_type={"task"} />
-      </Grid>
-      <Grid item>
-        <TaskTable
-          tasks={tasks ? tasks : []}
-          handleUpdateTasks={handleUpdateTasks}
-          handleTimedTaskSelect={handleTimedTaskSelect}
-          handleEditedTaskSelect={handleEditedTaskSelect}
-        />
-      </Grid>
-      {editedTask && editedTask.project_id == props.currentProject?.id && (
-        <Grid item id="edit-current-task">
-          <EditTaskForm
-            task={editedTask}
-            key={`${editedTask.id}_${editedTask.name}`}
-            handleUpdateTasks={handleUpdateTasks}
-            handleEditedTaskDeselect={handleEditedTaskDeselect}
-            handleProjectSelect={props.handleProjectSelect}
-          ></EditTaskForm>
-        </Grid>
-      )}
     </Grid>
   );
 };

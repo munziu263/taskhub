@@ -1,0 +1,70 @@
+/* CSV */
+03203a,6c6f7f,d7263d,ece2d0,d4cbb3
+
+/* With # */
+#03203a, #6c6f7f, #d7263d, #ece2d0, #d4cbb3
+
+/* Array */
+["03203a","6c6f7f","d7263d","ece2d0","d4cbb3"]
+
+/* Object */
+{"Oxford Blue":"03203a","Rhythm":"6c6f7f","Crimson":"d7263d","Bone":"ece2d0","Bone 2":"d4cbb3"}
+
+/* Extended Array */
+[{"name":"Oxford Blue","hex":"03203a","rgb":[3,32,58],"cmyk":[95,45,0,77],"hsb":[208,95,23],"hsl":[208,90,12],"lab":[12,1,-20]},{"name":"Rhythm","hex":"6c6f7f","rgb":[108,111,127],"cmyk":[15,13,0,50],"hsb":[231,15,50],"hsl":[231,8,46],"lab":[47,2,-9]},{"name":"Crimson","hex":"d7263d","rgb":[215,38,61],"cmyk":[0,82,72,16],"hsb":[352,82,84],"hsl":[352,70,50],"lab":[47,66,33]},{"name":"Bone","hex":"ece2d0","rgb":[236,226,208],"cmyk":[0,4,12,7],"hsb":[39,12,93],"hsl":[39,42,87],"lab":[90,0,10]},{"name":"Bone","hex":"d4cbb3","rgb":[212,203,179],"cmyk":[0,4,16,17],"hsb":[44,16,83],"hsl":[44,28,77],"lab":[82,-1,13]}]
+
+/* XML */
+<palette>
+  <color name="Oxford Blue" hex="03203a" r="3" g="32" b="58" />
+  <color name="Rhythm" hex="6c6f7f" r="108" g="111" b="127" />
+  <color name="Crimson" hex="d7263d" r="215" g="38" b="61" />
+  <color name="Bone" hex="ece2d0" r="236" g="226" b="208" />
+  <color name="Bone" hex="d4cbb3" r="212" g="203" b="179" />
+</palette>
+
+
+/* CSS HEX */
+--oxford-blue: #03203aff;
+--rhythm: #6c6f7fff;
+--crimson: #d7263dff;
+--bone: #ece2d0ff;
+--bone-2: #d4cbb3ff;
+
+/* CSS HSL */
+--oxford-blue: hsla(208, 90%, 12%, 1);
+--rhythm: hsla(231, 8%, 46%, 1);
+--crimson: hsla(352, 70%, 50%, 1);
+--bone: hsla(39, 42%, 87%, 1);
+--bone-2: hsla(44, 28%, 77%, 1);
+
+/* SCSS HEX */
+$oxford-blue: #03203aff;
+$rhythm: #6c6f7fff;
+$crimson: #d7263dff;
+$bone: #ece2d0ff;
+$bone-2: #d4cbb3ff;
+
+/* SCSS HSL */
+$oxford-blue: hsla(208, 90%, 12%, 1);
+$rhythm: hsla(231, 8%, 46%, 1);
+$crimson: hsla(352, 70%, 50%, 1);
+$bone: hsla(39, 42%, 87%, 1);
+$bone-2: hsla(44, 28%, 77%, 1);
+
+/* SCSS RGB */
+$oxford-blue: rgba(3, 32, 58, 1);
+$rhythm: rgba(108, 111, 127, 1);
+$crimson: rgba(215, 38, 61, 1);
+$bone: rgba(236, 226, 208, 1);
+$bone-2: rgba(212, 203, 179, 1);
+
+/* SCSS Gradient */
+$gradient-top: linear-gradient(0deg, #03203aff, #6c6f7fff, #d7263dff, #ece2d0ff, #d4cbb3ff);
+$gradient-right: linear-gradient(90deg, #03203aff, #6c6f7fff, #d7263dff, #ece2d0ff, #d4cbb3ff);
+$gradient-bottom: linear-gradient(180deg, #03203aff, #6c6f7fff, #d7263dff, #ece2d0ff, #d4cbb3ff);
+$gradient-left: linear-gradient(270deg, #03203aff, #6c6f7fff, #d7263dff, #ece2d0ff, #d4cbb3ff);
+$gradient-top-right: linear-gradient(45deg, #03203aff, #6c6f7fff, #d7263dff, #ece2d0ff, #d4cbb3ff);
+$gradient-bottom-right: linear-gradient(135deg, #03203aff, #6c6f7fff, #d7263dff, #ece2d0ff, #d4cbb3ff);
+$gradient-top-left: linear-gradient(225deg, #03203aff, #6c6f7fff, #d7263dff, #ece2d0ff, #d4cbb3ff);
+$gradient-bottom-left: linear-gradient(315deg, #03203aff, #6c6f7fff, #d7263dff, #ece2d0ff, #d4cbb3ff);
+$gradient-radial: radial-gradient(#03203aff, #6c6f7fff, #d7263dff, #ece2d0ff, #d4cbb3ff);

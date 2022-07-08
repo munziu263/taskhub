@@ -1,4 +1,4 @@
-db_path = r"C:\Users\mziumbe\Documents\GitHub\taskhub\api\api\app\database.sqlite"
+db_path = "./api/app/database.sqlite"
 
 """Flask configuration."""
 
