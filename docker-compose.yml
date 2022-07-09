@@ -1,0 +1,22 @@
+version: "3.9"
+services:
+  api:
+    build:  
+      context: ./api
+    image: taskhub-api
+    ports: 
+    - "5000:5000"
+    volumes: 
+    - ./api:/api/
+    environment: 
+      FLASK_ENV: development
+  frontend:
+    build: 
+      context: ./frontend
+    image: taskhub-frontend
+    volumes: 
+    - ./frontend:/frontend/
+    ports: 
+      - "3000:3000"
+    depends_on: 
+      - api
