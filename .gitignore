@@ -1,5 +1,6 @@
 backend/venv
 frontend/node_modules
+frontend/build
 api/api/__pycache__/
 api/api/test/__pycache__/
 api/api/__pycache__/

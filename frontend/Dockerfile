@@ -1,18 +1,30 @@
-FROM node:16-alpine
+FROM node:16-alpine as build
 
 WORKDIR /frontend
 
 ENV PATH /frontend/node_modules/.bin:$PATH
 
-COPY package.json ./
-COPY package-lock.json ./
-COPY tsconfig.json ./
+COPY package*.json .
+
 RUN npm install --silent
-RUN npm install --dev typescript && npm install
-RUN npm install react-scripts@3.4.1 -g --silent
 
-COPY . ./
+COPY . .
 
-EXPOSE 3000
+RUN npm run build
 
-CMD ["npm", "start"]
+FROM node:16-apline as production
+
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
+
+WORKDIR /frontend
+
+COPY package*.json .
+
+RUN npm ci --only=production
+
+COPY --from=build /frontend/build ./build
+
+RUN npm install -g serve
+
+RUN serve -s build -l 3000
