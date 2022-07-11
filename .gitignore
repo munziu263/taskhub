@@ -6,3 +6,4 @@ api/api/test/__pycache__/
 api/api/__pycache__/
 .vscode/launch.json
 .gitignore
+api/api/app/__pycache__/
