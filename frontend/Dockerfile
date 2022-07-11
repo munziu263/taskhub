@@ -10,6 +10,8 @@ RUN npm install --silent
 
 COPY . ./
 
+RUN chown -R node /app/node_modules
+
 RUN npm run build
 
 FROM node:16-alpine as production
