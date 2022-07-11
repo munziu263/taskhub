@@ -10,7 +10,7 @@ RUN npm install --silent
 
 COPY . ./
 
-RUN chown -R node /frontend/node_modules
+RUN chown -R $USER /frontend/node_modules
 
 RUN npm run build
 
