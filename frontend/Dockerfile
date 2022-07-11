@@ -19,7 +19,7 @@ WORKDIR /frontend
 
 COPY package*.json ./
 
-RUN npm ci --only=production
+RUN npm install
 
 COPY --from=build /frontend/build ./build
 
