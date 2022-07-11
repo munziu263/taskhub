@@ -15,7 +15,7 @@ def init_app(config_filename="app.config.Config"):
     # --- Initialize plugins
     db.init_app(app)
     ma.init_app(app)
-    cors.init_app(app, resources={r"/*": {"origins": "http://localhost:3000"}})
+    cors.init_app(app, resources={r"/*": {"origins": "*"}})
     app.config["CORS_HEADERS"] = "Content-Type"
 
     with app.app_context():

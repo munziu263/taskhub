@@ -10,9 +10,14 @@ services:
     volumes: 
     - ./api:/api/
     environment: 
-      FLASK_ENV: production
+      FLASK_ENV: development
   frontend:
     stdin_open: true
     tty: true
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    ports: 
+      - "3000:3000"
     depends_on: 
       - api

@@ -14,5 +14,10 @@ services:
   frontend:
     stdin_open: true
     tty: true
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile.prod
+    ports: 
+      - "8080:80"
     depends_on: 
       - api
