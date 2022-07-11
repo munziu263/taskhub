@@ -13,6 +13,7 @@ Flask-Cors = "^3.0.10"
 Flask-SQLAlchemy = "^2.5.1"
 marshmallow-sqlalchemy = "^0.28.0"
 flask-marshmallow = "^0.14.0"
+gunicorn = "^20.1.0"
 
 [tool.poetry.dev-dependencies]
 black = {version = "^22.3.0", allow-prereleases = true}

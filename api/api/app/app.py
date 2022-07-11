@@ -1,13 +1,12 @@
 from flask import Flask
 from flask_cors import CORS
 
-# from .load_test_data import load_test_data
-from .models import db, ma
+from models import db, ma
 
 cors = CORS()
 
 
-def init_app(config_filename="app.config.Config"):
+def init_app(config_filename="config.Config"):
     # --- Initialize core application
     app = Flask(__name__)
     app.config.from_object(config_filename)
@@ -20,7 +19,7 @@ def init_app(config_filename="app.config.Config"):
 
     with app.app_context():
         # Register blueprints
-        from .main import main as main_bp
+        from main import main as main_bp
 
         app.register_blueprint(main_bp)
 

@@ -1,5 +1,5 @@
 from api.app.models import ProjectSchema, TaskSchema
-from .test_data import projects, tasks
+from test_data import projects, tasks
 
 
 def load_test_data(db):

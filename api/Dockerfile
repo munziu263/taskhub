@@ -28,4 +28,4 @@ WORKDIR /api/api/app
 
 RUN poetry install
 
-CMD ["flask", "run", "--host", "0.0.0.0"]
+RUN gunicorn -w 5 -b ":5000" wsgi:app
