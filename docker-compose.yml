@@ -16,7 +16,6 @@ services:
     image: taskhub-frontend
     volumes: 
     - ./frontend:/frontend/
-    - /frontend/node_modules
     ports: 
       - "3000:3000"
     depends_on: 
