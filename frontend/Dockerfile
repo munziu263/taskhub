@@ -4,22 +4,22 @@ WORKDIR /frontend
 
 ENV PATH /frontend/node_modules/.bin:$PATH
 
-COPY package*.json .
+COPY package*.json ./
 
 RUN npm install --silent
 
-COPY . .
+COPY . ./
 
 RUN npm run build
 
-FROM node:16-apline as production
+FROM node:16-alpine as production
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
 
 WORKDIR /frontend
 
-COPY package*.json .
+COPY package*.json ./
 
 RUN npm ci --only=production
 
