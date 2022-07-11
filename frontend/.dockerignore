@@ -2,4 +2,6 @@ node_modules
 build
 .dockerignore
 Dockerfile
-Dockerfile.prod
+.gitignore
+colors-text
+project_plan.md
