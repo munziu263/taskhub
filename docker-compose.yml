@@ -3,7 +3,7 @@ services:
   api:
     build:  
       context: ./api
-    image: taskhub-api
+    image: munziu263/taskhub-api
     ports: 
     - "5000:5000"
     volumes: 
@@ -13,7 +13,7 @@ services:
   frontend:
     build: 
       context: ./frontend
-    image: taskhub-frontend
+    image: munziu263/taskhub-frontend
     volumes: 
     - ./frontend:/frontend/
     ports: 
