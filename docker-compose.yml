@@ -16,6 +16,7 @@ services:
     tty: true
     build: 
       context: ./frontend
+      dockerfile: Dockerfile.prod
     volumes: 
     - ./frontend:/frontend/src
     ports: 
