@@ -10,7 +10,7 @@ RUN npm install --silent
 
 COPY . ./
 
-RUN chown -R $USER /frontend/node_modules
+RUN mkdir node_modules/.cache/.eslint_cache && chown -R $(whoami) /frontend/node_modules
 
 RUN npm run build
 
