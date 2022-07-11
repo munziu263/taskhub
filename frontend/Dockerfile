@@ -2,15 +2,11 @@ FROM node:16-alpine as build
 
 WORKDIR /frontend
 
-ENV PATH /frontend/node_modules/.bin:$PATH
-
 COPY package*.json ./
 
 RUN npm install --silent
 
 COPY . ./
-
-RUN mkdir node_modules/.cache/.eslint_cache && chown -R $(whoami) /frontend/node_modules
 
 RUN npm run build
 
