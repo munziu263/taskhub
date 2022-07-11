@@ -28,4 +28,4 @@ WORKDIR /api/api/app
 
 RUN poetry install
 
-CMD [ "gunicorn", "-w", "5", ":5000", "wsgi:app" ]
+CMD [ "gunicorn", "-w", "5", "-b", ":5000", "wsgi:app" ]
