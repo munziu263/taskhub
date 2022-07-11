@@ -8,4 +8,6 @@ RUN npm install --silent
 
 COPY . ./
 
+EXPOSE 3000
+
 RUN npm run start
