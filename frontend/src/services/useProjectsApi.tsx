@@ -4,7 +4,7 @@ import { useState } from "react";
 export default function useProjectsApi() {
   const [isQuerying, setIsQuerying] = useState<boolean>(false);
   // Querying location and config
-  const BASE_URL: string = "http://localhost:5000";
+  const BASE_URL: string = "http://127.0.0.1:5000";
   const url: (id?: number) => string = (id) =>
     id ? BASE_URL + "/projects/" + id : BASE_URL + "/projects";
   const options = {
