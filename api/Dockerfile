@@ -22,10 +22,10 @@ RUN poetry config virtualenvs.create false \
 
 COPY . /api
 
-EXPOSE 5000
-
 WORKDIR /api/api/app
 
 RUN poetry install
 
-CMD [ "gunicorn", "-w", "5", "-b", ":5000", "wsgi:app" ]
+EXPOSE 5000
+
+CMD [ "gunicorn", "-w", "5", "-b", "127.0.0.1:5000", "wsgi:app" ]
