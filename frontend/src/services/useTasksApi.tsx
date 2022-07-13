@@ -4,7 +4,7 @@ import { useState } from "react";
 export default function useTasksApi() {
   const [isQuerying, setIsQuerying] = useState<boolean>(false);
   // Querying location and config
-  const BASE_URL: string = "http://127.0.0.1:5000";
+  const BASE_URL: string = "/api";
   const url: (id?: number) => string = (id) =>
     id ? BASE_URL + "/tasks/" + id : BASE_URL + "/tasks";
   const options = {

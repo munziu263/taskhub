@@ -21,7 +21,7 @@ def init_app(config_filename="config.Config"):
         # Register blueprints
         from main import main as main_bp
 
-        app.register_blueprint(main_bp)
+        app.register_blueprint(main_bp, url_prefix="/api/")
 
         # load_test_data(db)
         db.create_all()

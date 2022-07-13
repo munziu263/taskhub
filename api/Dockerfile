@@ -28,4 +28,4 @@ RUN poetry install
 
 EXPOSE 5000
 
-CMD [ "gunicorn", "-w", "5", "-b", "127.0.0.1:5000", "wsgi:app" ]
+CMD [ "gunicorn", "-w", "5", "-b", ":5000", "wsgi:app" ]
