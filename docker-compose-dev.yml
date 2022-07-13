@@ -6,12 +6,13 @@ services:
     build:  
       context: ./api
       dockerfile: Dockerfile.dev
+    volumes: 
+    - ./api:/api
     ports: 
     - "5000:5000"
-    volumes: 
-    - ./api:/api/
     environment: 
       FLASK_ENV: development
+      FLASK_APP: wsgi
   frontend:
     stdin_open: true
     tty: true
@@ -19,7 +20,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile.dev
     volumes: 
-    - ./frontend:/frontend/
+    - ./frontend:/frontend
     ports: 
       - "3000:3000"
     depends_on: 

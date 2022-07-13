@@ -28,4 +28,4 @@ RUN poetry install
 
 EXPOSE 5000
 
-CMD [ "python", "wsgi.py" ]
+CMD [ "flask", "run", "--host", "0.0.0.0" ]

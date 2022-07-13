@@ -1,8 +1,8 @@
 import json
 
 from flask_cors import cross_origin
-from api.app.models import ProjectSchema, TaskSchema, db
-from api.app.models import Project, Task
+from models import ProjectSchema, TaskSchema, db
+from models import Project, Task
 from flask import request, jsonify, request_started
 from . import main
 
