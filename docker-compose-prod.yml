@@ -5,6 +5,7 @@ services:
     tty: true
     build:  
       context: ./api
+      dockerfile: Dockerfile.prod
     ports: 
     - "5000:5000"
     environment: 

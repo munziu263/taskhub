@@ -7,3 +7,6 @@ api/api/__pycache__/
 .vscode/launch.json
 .gitignore
 api/api/app/__pycache__/
+frontend/node_modules/
+api/api/app/__pycache__/
+api/api/app/main/__pycache__/

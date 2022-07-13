@@ -5,6 +5,7 @@ services:
     tty: true
     build:  
       context: ./api
+      dockerfile: Dockerfile.dev
     ports: 
     - "5000:5000"
     volumes: 
@@ -17,6 +18,8 @@ services:
     build: 
       context: ./frontend
       dockerfile: Dockerfile.dev
+    volumes: 
+    - ./frontend:/frontend/
     ports: 
       - "3000:3000"
     depends_on: 
