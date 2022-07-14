@@ -135,7 +135,7 @@ export const ProjectPage = (props: ProjectPageProps) => {
           </Grid>
           <Grid item>
             <TaskTable
-              editedTaskID={editedTask?.id}
+              editedTask={editedTask}
               tasks={tasks ? tasks : []}
               handleUpdateTasks={handleUpdateTasks}
               handleTimedTaskSelect={handleTimedTaskSelect}
@@ -146,12 +146,12 @@ export const ProjectPage = (props: ProjectPageProps) => {
           <Grid item id="edit-current-task">
             <Collapse
               in={
-                editedTask && editedTask.project_id === props.currentProject?.id
+                editedTask && editedTask.project_id == props.currentProject?.id
               }
               orientation="vertical"
             >
               {editedTask &&
-                editedTask.project_id === props.currentProject?.id && (
+                editedTask.project_id == props.currentProject?.id && (
                   <EditTaskForm
                     task={editedTask}
                     key={`${editedTask.id}_${editedTask.name}`}

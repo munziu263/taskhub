@@ -1,14 +1,14 @@
-import { Button, Box, TextField, Grid } from "@mui/material";
+import { Button, TextField, Grid } from "@mui/material";
 import { ChangeEvent, FormEvent, useState } from "react";
 
-interface EditTaskForm {
+interface EditTaskFormProps {
   task: Task;
   handleUpdateTasks: any;
   handleEditedTaskDeselect: any;
   handleProjectSelect: any;
 }
 
-export const EditTaskForm = (props: EditTaskForm) => {
+export const EditTaskForm = (props: EditTaskFormProps) => {
   const [taskValues, setTaskValues] = useState<Task>(props.task);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -82,7 +82,10 @@ export const EditTaskForm = (props: EditTaskForm) => {
               label="Deadline"
               type="date"
               InputLabelProps={{ shrink: true }}
-              // value={taskValues.deadline ? taskValues.deadline : undefined}
+              value={taskValues.deadline ? taskValues.deadline : undefined}
+              defaultValue={
+                taskValues.deadline ? taskValues.deadline : undefined
+              }
               onChange={handleChange}
               fullWidth
             />

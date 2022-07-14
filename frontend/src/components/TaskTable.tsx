@@ -15,7 +15,7 @@ interface TaskTableProps {
   handleTimedTaskSelect: any;
   handleEditedTaskSelect: any;
   handleDeleteTask: any;
-  editedTaskID?: number;
+  editedTask?: Task;
 }
 
 export const TaskTable = (props: TaskTableProps) => {
@@ -32,6 +32,19 @@ export const TaskTable = (props: TaskTableProps) => {
     }
     const updatedTask: Task = { ...oldTask, complete: event.target.checked };
     props.handleUpdateTasks(updatedTask);
+  };
+
+  const sortByPriorityThenByDeadline = (a: Task, b: Task) => {
+    const [A_PRIORITY, B_PRIORITY] = [
+      a.priority ? a.priority : 0,
+      b.priority ? b.priority : 0,
+    ];
+    const [A_DEADLINE, B_DEADLINE] = [
+      a.deadline ? a.deadline.getTime() : 0,
+      b.deadline ? b.deadline.getTime() : 0,
+    ];
+
+    return B_PRIORITY - A_PRIORITY || B_DEADLINE - A_DEADLINE;
   };
 
   return (
@@ -74,10 +87,10 @@ export const TaskTable = (props: TaskTableProps) => {
           {props.tasks
             .slice(0)
             .reverse()
+            .sort(sortByPriorityThenByDeadline)
             .map((task: Task) => {
               return (
                 <TaskTableRow
-                  editedTaskID={props.editedTaskID}
                   task={task}
                   key={`${task.id}_${task.name}`}
                   handleComplete={(event: ChangeEvent<HTMLInputElement>) =>
@@ -87,7 +100,7 @@ export const TaskTable = (props: TaskTableProps) => {
                     event: MouseEvent<HTMLButtonElement>
                   ) => props.handleTimedTaskSelect(event, task)}
                   handleEditedTaskSelect={(
-                    event: MouseEvent<HTMLButtonElement>
+                    event: ChangeEvent<HTMLButtonElement>
                   ) => props.handleEditedTaskSelect(event, task)}
                   handleDeleteTask={(event: MouseEvent<HTMLButtonElement>) =>
                     props.handleDeleteTask(event, task)

@@ -3,16 +3,15 @@ import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-interface TaskTableRow {
+interface TaskTableRowProps {
   task: Task;
   handleComplete: any;
   handleTimedTaskSelect: any;
   handleEditedTaskSelect: any;
   handleDeleteTask: any;
-  editedTaskID?: number;
 }
 
-export const TaskTableRow: React.FC<TaskTableRow> = (props: TaskTableRow) => {
+export const TaskTableRow = (props: TaskTableRowProps) => {
   return (
     <TableRow>
       <TableCell>
