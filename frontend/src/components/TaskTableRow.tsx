@@ -22,7 +22,13 @@ export const TaskTableRow: React.FC<TaskTableRow> = (props: TaskTableRow) => {
           color="success"
         />
       </TableCell>
-      <TableCell>{props.task.name}</TableCell>
+      <TableCell
+        sx={{
+          textDecoration: props.task.complete ? "line-through" : "none",
+        }}
+      >
+        {props.task.name}
+      </TableCell>
       <TableCell
         sx={{
           display: {
