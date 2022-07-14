@@ -30,7 +30,7 @@ export const EditTaskForm = (props: EditTaskForm) => {
     props.task && (
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2} gridTemplateColumns="repeat(3, 1fr)">
-          <Grid item xs={4}>
+          <Grid item xs={12} sm={6} lg={4} xl={4}>
             <TextField
               id="name-input"
               name="name"
@@ -41,7 +41,7 @@ export const EditTaskForm = (props: EditTaskForm) => {
               fullWidth
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={12} sm={6} lg={4} xl={4}>
             <TextField
               id="project-id-input"
               name="project_id"
@@ -52,7 +52,7 @@ export const EditTaskForm = (props: EditTaskForm) => {
               fullWidth
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={12} sm={6} lg={4} xl={4}>
             {" "}
             <TextField
               id="elapsed-time-input"
@@ -64,7 +64,7 @@ export const EditTaskForm = (props: EditTaskForm) => {
               fullWidth
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={12} sm={6} lg={4} xl={4}>
             <TextField
               id="estimated-time-input"
               name="estimated_time"
@@ -75,7 +75,7 @@ export const EditTaskForm = (props: EditTaskForm) => {
               fullWidth
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={12} sm={6} lg={4} xl={4}>
             <TextField
               id="deadline-input"
               name="deadline"
@@ -87,7 +87,7 @@ export const EditTaskForm = (props: EditTaskForm) => {
               fullWidth
             />
           </Grid>
-          <Grid item xs={4}>
+          <Grid item xs={12} sm={6} lg={4} xl={4}>
             <TextField
               id="priority-input"
               name="priority"
