@@ -40,8 +40,32 @@ export const TaskTable = (props: TaskTable) => {
           <TableRow>
             <TableCell>Complete</TableCell>
             <TableCell>Name</TableCell>
-            <TableCell>Time Elapsed</TableCell>
-            <TableCell>Estimated Time</TableCell>
+            <TableCell
+              sx={{
+                display: {
+                  xs: "none",
+                  sm: "none",
+                  md: "none",
+                  lg: "table-cell",
+                  xl: "table-cell",
+                },
+              }}
+            >
+              Time Elapsed
+            </TableCell>
+            <TableCell
+              sx={{
+                display: {
+                  xs: "none",
+                  sm: "none",
+                  md: "none",
+                  lg: "table-cell",
+                  xl: "table-cell",
+                },
+              }}
+            >
+              Estimated Time
+            </TableCell>
             <TableCell></TableCell>
           </TableRow>
         </TableHead>

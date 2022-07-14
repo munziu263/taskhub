@@ -21,8 +21,32 @@ export const TaskTableRow: React.FC<TaskTableRow> = (props: TaskTableRow) => {
         />
       </TableCell>
       <TableCell>{props.task.name}</TableCell>
-      <TableCell>{props.task.elapsed_time}</TableCell>
-      <TableCell>{props.task.estimated_time}</TableCell>
+      <TableCell
+        sx={{
+          display: {
+            xs: "none",
+            sm: "none",
+            md: "none",
+            lg: "table-cell",
+            xl: "table-cell",
+          },
+        }}
+      >
+        {props.task.elapsed_time}
+      </TableCell>
+      <TableCell
+        sx={{
+          display: {
+            xs: "none",
+            sm: "none",
+            md: "none",
+            lg: "table-cell",
+            xl: "table-cell",
+          },
+        }}
+      >
+        {props.task.estimated_time}
+      </TableCell>
       <TableCell>
         <Button>
           <ModeEditIcon
