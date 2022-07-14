@@ -79,7 +79,10 @@ export const ProjectPage = (props: ProjectPageProps) => {
     tasksApi
       .remove(deletedTask.id)
       .then((updatedTasks: Task[]) => {
-        setTasks(updatedTasks);
+        const updatedTasksInCurrentProject: Task[] = updatedTasks.filter(
+          (task: Task) => task.project_id === deletedTask.project_id
+        );
+        setTasks(updatedTasksInCurrentProject);
       })
       .catch((err: Error) => {
         console.log(err);
@@ -116,7 +119,7 @@ export const ProjectPage = (props: ProjectPageProps) => {
     } else {
       setTasks(props.currentProject.tasks);
     }
-  }, []);
+  }, [props.currentProject]);
 
   return (
     <Grid container direction="row" padding={2} spacing={1} alignItems="center">
