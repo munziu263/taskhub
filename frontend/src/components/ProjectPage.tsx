@@ -1,5 +1,4 @@
-import { CurrencyYenTwoTone } from "@mui/icons-material";
-import { Collapse, Container, Grid, Typography } from "@mui/material";
+import { Collapse, Grid, Typography } from "@mui/material";
 import { MouseEvent, useEffect, useState } from "react";
 import useProjectsApi from "../services/useProjectsApi";
 import useTasksApi from "../services/useTasksApi";
@@ -8,17 +7,17 @@ import { EditTaskForm } from "./EditTaskForm";
 import { TaskTable } from "./TaskTable";
 import { Timer } from "./Timer";
 
-interface ProjectPage {
+interface ProjectPageProps {
   currentProject?: Project;
   handleProjectSelect: any;
 }
 
 const DEFAULT_ACTIVE_TIME: Seconds = 25 * 60;
 const DEFAULT_REST_TIME: Seconds = 5 * 60;
-const TEST_ACTIVE_TIME = 5;
-const TEST_REST_TIME = 3;
+// const TEST_ACTIVE_TIME = 5;
+// const TEST_REST_TIME = 3;
 
-export const ProjectPage = (props: ProjectPage) => {
+export const ProjectPage = (props: ProjectPageProps) => {
   const { tasksApi } = useTasksApi();
   const { projectsApi } = useProjectsApi();
 
@@ -27,14 +26,6 @@ export const ProjectPage = (props: ProjectPage) => {
   const [editedTask, setEditedTask] = useState<Task>();
 
   const endPeriodHandler = () => alert("Period Ended");
-
-  useEffect(() => {
-    if (!props.currentProject) {
-      setTasksWithoutProject();
-    } else {
-      setTasks(props.currentProject.tasks);
-    }
-  }, [props.currentProject]);
 
   const setTasksWithoutProject = async () => {
     tasksApi
@@ -80,6 +71,21 @@ export const ProjectPage = (props: ProjectPage) => {
       });
   };
 
+  const handleDeleteTask = (
+    event: MouseEvent<HTMLButtonElement>,
+    deletedTask: Task
+  ) => {
+    event.preventDefault();
+    tasksApi
+      .remove(deletedTask.id)
+      .then((updatedTasks: Task[]) => {
+        setTasks(updatedTasks);
+      })
+      .catch((err: Error) => {
+        console.log(err);
+      });
+  };
+
   const handleTimedTaskSelect = (
     event: MouseEvent<HTMLButtonElement>,
     task: Task
@@ -104,6 +110,14 @@ export const ProjectPage = (props: ProjectPage) => {
     setEditedTask(undefined);
   };
 
+  useEffect(() => {
+    if (!props.currentProject) {
+      setTasksWithoutProject();
+    } else {
+      setTasks(props.currentProject.tasks);
+    }
+  }, []);
+
   return (
     <Grid container direction="row" padding={2} spacing={1} alignItems="center">
       <Grid item xs={12} md={6} lg={8}>
@@ -123,17 +137,18 @@ export const ProjectPage = (props: ProjectPage) => {
               handleUpdateTasks={handleUpdateTasks}
               handleTimedTaskSelect={handleTimedTaskSelect}
               handleEditedTaskSelect={handleEditedTaskSelect}
+              handleDeleteTask={handleDeleteTask}
             />
           </Grid>
           <Grid item id="edit-current-task">
             <Collapse
               in={
-                editedTask && editedTask.project_id == props.currentProject?.id
+                editedTask && editedTask.project_id === props.currentProject?.id
               }
               orientation="vertical"
             >
               {editedTask &&
-                editedTask.project_id == props.currentProject?.id && (
+                editedTask.project_id === props.currentProject?.id && (
                   <EditTaskForm
                     task={editedTask}
                     key={`${editedTask.id}_${editedTask.name}`}

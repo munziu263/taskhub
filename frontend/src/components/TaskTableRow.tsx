@@ -1,12 +1,14 @@
 import { Button, Checkbox, TableCell, TableRow } from "@mui/material";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 interface TaskTableRow {
   task: Task;
   handleComplete: any;
   handleTimedTaskSelect: any;
   handleEditedTaskSelect: any;
+  handleDeleteTask: any;
   editedTaskID?: number;
 }
 
@@ -58,6 +60,12 @@ export const TaskTableRow: React.FC<TaskTableRow> = (props: TaskTableRow) => {
           <PlayArrowIcon
             color="secondary"
             onClick={(event) => props.handleTimedTaskSelect(event, props.task)}
+          />
+        </Button>
+        <Button>
+          <DeleteIcon
+            color="secondary"
+            onClick={(event) => props.handleDeleteTask(event, props.task)}
           />
         </Button>
       </TableCell>

@@ -6,24 +6,25 @@ import {
   TableCell,
   Paper,
 } from "@mui/material";
-import { ChangeEvent } from "react";
+import { ChangeEvent, MouseEvent } from "react";
 import { TaskTableRow } from "./TaskTableRow";
 
-interface TaskTable {
+interface TaskTableProps {
   tasks: Task[];
   handleUpdateTasks: any;
   handleTimedTaskSelect: any;
   handleEditedTaskSelect: any;
+  handleDeleteTask: any;
   editedTaskID?: number;
 }
 
-export const TaskTable = (props: TaskTable) => {
+export const TaskTable = (props: TaskTableProps) => {
   const handleComplete = (
     event: ChangeEvent<HTMLInputElement>,
     taskId: number
   ) => {
     const oldTask: Task | undefined = props.tasks.find(
-      (task: Task) => task.id == taskId
+      (task: Task) => task.id === taskId
     );
     if (!oldTask) {
       console.log("Task not found");
@@ -83,11 +84,14 @@ export const TaskTable = (props: TaskTable) => {
                     handleComplete(event, task.id)
                   }
                   handleTimedTaskSelect={(
-                    event: ChangeEvent<HTMLInputElement>
+                    event: MouseEvent<HTMLButtonElement>
                   ) => props.handleTimedTaskSelect(event, task)}
                   handleEditedTaskSelect={(
-                    event: ChangeEvent<HTMLInputElement>
+                    event: MouseEvent<HTMLButtonElement>
                   ) => props.handleEditedTaskSelect(event, task)}
+                  handleDeleteTask={(event: MouseEvent<HTMLButtonElement>) =>
+                    props.handleDeleteTask(event, task)
+                  }
                 />
               );
             })}
