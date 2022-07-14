@@ -106,7 +106,7 @@ export const ProjectPage = (props: ProjectPage) => {
 
   return (
     <Grid container direction="row" padding={2} spacing={1} alignItems="center">
-      <Grid item xs={8}>
+      <Grid item xs={12} md={6} lg={8}>
         <Grid container direction="column" spacing={2} padding={1}>
           <Grid item>
             <Typography variant="h2">
@@ -147,7 +147,7 @@ export const ProjectPage = (props: ProjectPage) => {
         </Grid>
       </Grid>
 
-      <Grid item xs={4} sx={{ height: "100%" }}>
+      <Grid item xs={12} md={6} lg={4} sx={{ height: "100%" }}>
         <Timer
           activePeriod={DEFAULT_ACTIVE_TIME}
           restPeriod={DEFAULT_REST_TIME}

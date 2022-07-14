@@ -57,12 +57,12 @@ function App() {
       <CssBaseline />
       <Box>
         <Grid container>
-          <Grid item xs={1.5}>
+          <Grid item xs={12} md={2}>
             <Paper elevation={1} sx={{ height: "100%" }}>
               <ProjectNavBar handleProjectSelect={handleProjectSelect} />
             </Paper>
           </Grid>
-          <Grid item xs={10.5}>
+          <Grid item xs={12} md={10}>
             <ProjectPage
               currentProject={currentProject}
               handleProjectSelect={handleProjectSelect}
