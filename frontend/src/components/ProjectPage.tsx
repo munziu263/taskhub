@@ -6,6 +6,7 @@ import { CreateField } from "./CreateField";
 import { EditTaskForm } from "./EditTaskForm";
 import { TaskTable } from "./TaskTable";
 import { Timer } from "./Timer";
+import { PercentageCompleteTimerIcon } from "./PercentageCompleteTimerIcon";
 
 interface ProjectPageProps {
   currentProject?: Project;
@@ -207,6 +208,7 @@ export const ProjectPage = (props: ProjectPageProps) => {
           handleUpdateTasks={handleUpdateTasks}
         />
       </Grid>
+      <PercentageCompleteTimerIcon percentageComplete={50} />
     </Grid>
   );
 };
