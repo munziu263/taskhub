@@ -78,9 +78,6 @@ def update_project_by_id(project_id: int):
 @cross_origin()
 def update_task_by_id(task_id: int):
     data = request.json
-    if "deadline" in data.keys():
-        data["deadline"] = date.fromisoformat(data["deadline"])
-
     updated_task = Task.get_by_id(task_id).update(**data).save()
     return jsonify(updated_task)
 
