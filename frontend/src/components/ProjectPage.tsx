@@ -1,5 +1,5 @@
 import { Collapse, Grid, Typography } from "@mui/material";
-import { MouseEvent, useEffect, useState } from "react";
+import { MouseEvent, ChangeEvent, useEffect, useState } from "react";
 import useProjectsApi from "../services/useProjectsApi";
 import useTasksApi from "../services/useTasksApi";
 import { CreateField } from "./CreateField";
@@ -24,6 +24,7 @@ export const ProjectPage = (props: ProjectPageProps) => {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [timedTask, setTimedTask] = useState<Task>();
   const [editedTask, setEditedTask] = useState<Task>();
+  const [showCompleted, setShowCompleted] = useState<boolean>(false);
 
   const endPeriodHandler = () => alert("Period Ended");
 
@@ -113,6 +114,16 @@ export const ProjectPage = (props: ProjectPageProps) => {
     setEditedTask(undefined);
   };
 
+  const handleShowCompleted = (event: ChangeEvent<HTMLInputElement>) => {
+    setShowCompleted((prevState: boolean) => !prevState);
+  };
+
+  const completed = (tasks: Task[]) =>
+    tasks.filter((task: Task) => task.complete);
+
+  const uncomplete = (tasks: Task[]) =>
+    tasks.filter((task: Task) => !task.complete);
+
   useEffect(() => {
     if (!props.currentProject) {
       setTasksWithoutProject();
@@ -134,14 +145,35 @@ export const ProjectPage = (props: ProjectPageProps) => {
             <CreateField handleCreate={handleCreateTask} obj_type={"task"} />
           </Grid>
           <Grid item>
-            <TaskTable
-              editedTask={editedTask}
-              tasks={tasks ? tasks : []}
-              handleUpdateTasks={handleUpdateTasks}
-              handleTimedTaskSelect={handleTimedTaskSelect}
-              handleEditedTaskSelect={handleEditedTaskSelect}
-              handleDeleteTask={handleDeleteTask}
-            />
+            {uncomplete(tasks) && (
+              <TaskTable
+                tasks={uncomplete(tasks) ? uncomplete(tasks) : []}
+                header={true}
+                label={undefined}
+                handleUpdateTasks={handleUpdateTasks}
+                handleTimedTaskSelect={handleTimedTaskSelect}
+                handleEditedTaskSelect={handleEditedTaskSelect}
+                handleDeleteTask={handleDeleteTask}
+                handleShowCompleted={handleShowCompleted}
+                showCompleted={showCompleted}
+                editedTask={editedTask}
+              />
+            )}
+            {showCompleted && completed(tasks) && (
+              <Collapse in={showCompleted} orientation="vertical">
+                <TaskTable
+                  tasks={completed(tasks) ? completed(tasks) : []}
+                  header={false}
+                  label={"Completed"}
+                  handleUpdateTasks={handleUpdateTasks}
+                  handleTimedTaskSelect={handleTimedTaskSelect}
+                  handleEditedTaskSelect={handleEditedTaskSelect}
+                  handleDeleteTask={handleDeleteTask}
+                  editedTask={editedTask}
+                  showCompleted={showCompleted}
+                />
+              </Collapse>
+            )}
           </Grid>
           <Grid item id="edit-current-task">
             <Collapse

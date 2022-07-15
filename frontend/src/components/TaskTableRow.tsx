@@ -14,7 +14,7 @@ interface TaskTableRowProps {
 export const TaskTableRow = (props: TaskTableRowProps) => {
   return (
     <TableRow>
-      <TableCell>
+      <TableCell style={{ width: "10%" }}>
         <Checkbox
           onChange={(event) => props.handleComplete(event, props.task.id)}
           checked={props.task.complete}
@@ -25,6 +25,7 @@ export const TaskTableRow = (props: TaskTableRowProps) => {
         sx={{
           textDecoration: props.task.complete ? "line-through" : "none",
         }}
+        style={{ width: "30%" }}
       >
         {props.task.name}
       </TableCell>
@@ -38,6 +39,7 @@ export const TaskTableRow = (props: TaskTableRowProps) => {
             xl: "table-cell",
           },
         }}
+        style={{ width: "10%" }}
       >
         {props.task.elapsed_time}
       </TableCell>
@@ -51,10 +53,11 @@ export const TaskTableRow = (props: TaskTableRowProps) => {
             xl: "table-cell",
           },
         }}
+        style={{ width: "10%" }}
       >
         {props.task.estimated_time}
       </TableCell>
-      <TableCell>
+      <TableCell style={{ width: "30%" }}>
         <Button>
           <ModeEditIcon
             color="secondary"

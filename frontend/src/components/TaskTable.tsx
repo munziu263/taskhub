@@ -5,16 +5,21 @@ import {
   TableRow,
   TableCell,
   Paper,
+  Switch,
 } from "@mui/material";
-import { ChangeEvent, MouseEvent } from "react";
+import { ChangeEvent, MouseEvent, useState } from "react";
 import { TaskTableRow } from "./TaskTableRow";
 
 interface TaskTableProps {
   tasks: Task[];
+  header: boolean;
+  label?: string;
   handleUpdateTasks: any;
   handleTimedTaskSelect: any;
   handleEditedTaskSelect: any;
   handleDeleteTask: any;
+  handleShowCompleted?: any;
+  showCompleted: boolean;
   editedTask?: Task;
 }
 
@@ -50,39 +55,56 @@ export const TaskTable = (props: TaskTableProps) => {
   return (
     <Paper sx={{ p: 1 }}>
       <Table>
-        <TableHead>
+        {props.header && (
+          <TableHead>
+            <TableRow>
+              <TableCell style={{ width: "10%" }}>Complete</TableCell>
+              <TableCell style={{ width: "30%" }}>Name</TableCell>
+              <TableCell
+                sx={{
+                  display: {
+                    xs: "none",
+                    sm: "none",
+                    md: "none",
+                    lg: "table-cell",
+                    xl: "table-cell",
+                  },
+                }}
+                style={{ width: "10%" }}
+              >
+                Time Elapsed
+              </TableCell>
+              <TableCell
+                sx={{
+                  display: {
+                    xs: "none",
+                    sm: "none",
+                    md: "none",
+                    lg: "table-cell",
+                    xl: "table-cell",
+                  },
+                }}
+                style={{ width: "10%" }}
+              >
+                Estimated Time
+              </TableCell>
+              <TableCell style={{ width: "30%" }}>
+                <Switch
+                  checked={props.showCompleted}
+                  onChange={props.handleShowCompleted}
+                />
+                Show Completed
+              </TableCell>
+            </TableRow>
+          </TableHead>
+        )}
+        {props.label && (
           <TableRow>
-            <TableCell>Complete</TableCell>
-            <TableCell>Name</TableCell>
-            <TableCell
-              sx={{
-                display: {
-                  xs: "none",
-                  sm: "none",
-                  md: "none",
-                  lg: "table-cell",
-                  xl: "table-cell",
-                },
-              }}
-            >
-              Time Elapsed
+            <TableCell colSpan={5} width="100%" align="center">
+              {props.label}
             </TableCell>
-            <TableCell
-              sx={{
-                display: {
-                  xs: "none",
-                  sm: "none",
-                  md: "none",
-                  lg: "table-cell",
-                  xl: "table-cell",
-                },
-              }}
-            >
-              Estimated Time
-            </TableCell>
-            <TableCell></TableCell>
           </TableRow>
-        </TableHead>
+        )}
         <TableBody>
           {props.tasks
             .slice(0)
