@@ -1,3 +1,4 @@
+import { ThemeContext } from "@emotion/react";
 import {
   Table,
   TableBody,
@@ -6,6 +7,7 @@ import {
   TableCell,
   Paper,
   Switch,
+  Box,
 } from "@mui/material";
 import { ChangeEvent, MouseEvent, useState } from "react";
 import { TaskTableRow } from "./TaskTableRow";
@@ -58,8 +60,18 @@ export const TaskTable = (props: TaskTableProps) => {
         {props.header && (
           <TableHead>
             <TableRow>
-              <TableCell style={{ width: "10%" }}>Complete</TableCell>
-              <TableCell style={{ width: "30%" }}>Name</TableCell>
+              <TableCell colSpan={5} padding="none" width="100%" align="right">
+                <Switch
+                  checked={props.showCompleted}
+                  onChange={props.handleShowCompleted}
+                  color="secondary"
+                />
+                Show Completed
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell style={{ width: "15%" }}>Complete</TableCell>
+              <TableCell style={{ width: "25%" }}>Name</TableCell>
               <TableCell
                 sx={{
                   display: {
@@ -88,20 +100,14 @@ export const TaskTable = (props: TaskTableProps) => {
               >
                 Estimated Time
               </TableCell>
-              <TableCell style={{ width: "30%" }}>
-                <Switch
-                  checked={props.showCompleted}
-                  onChange={props.handleShowCompleted}
-                />
-                Show Completed
-              </TableCell>
+              <TableCell style={{ width: "30%" }}></TableCell>
             </TableRow>
           </TableHead>
         )}
         {props.label && (
           <TableRow>
-            <TableCell colSpan={5} width="100%" align="center">
-              {props.label}
+            <TableCell colSpan={5} padding="none" width="100%" align="center">
+              <Box sx={{ pb: 1.5 }}>{props.label}</Box>
             </TableCell>
           </TableRow>
         )}

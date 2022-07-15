@@ -53,11 +53,11 @@ export const TaskTableRow = (props: TaskTableRowProps) => {
             xl: "table-cell",
           },
         }}
-        style={{ width: "10%" }}
+        style={{ width: "15%" }}
       >
         {props.task.estimated_time}
       </TableCell>
-      <TableCell style={{ width: "30%" }}>
+      <TableCell style={{ width: "25%" }}>
         <Button>
           <ModeEditIcon
             color="secondary"

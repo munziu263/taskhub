@@ -134,8 +134,8 @@ export const ProjectPage = (props: ProjectPageProps) => {
 
   return (
     <Grid container direction="row" padding={2} spacing={1} alignItems="center">
-      <Grid item xs={12} md={6} lg={8}>
-        <Grid container direction="column" spacing={2} padding={1}>
+      <Grid item xs={12} sm={12} md={6} lg={8}>
+        <Grid container direction="column" spacing={2}>
           <Grid item>
             <Typography variant="h2">
               {props.currentProject ? props.currentProject.name : "Home"}
@@ -159,8 +159,8 @@ export const ProjectPage = (props: ProjectPageProps) => {
                 editedTask={editedTask}
               />
             )}
-            {showCompleted && completed(tasks) && (
-              <Collapse in={showCompleted} orientation="vertical">
+            <Collapse in={showCompleted} orientation="vertical">
+              {showCompleted && completed(tasks) && (
                 <TaskTable
                   tasks={completed(tasks) ? completed(tasks) : []}
                   header={false}
@@ -172,8 +172,8 @@ export const ProjectPage = (props: ProjectPageProps) => {
                   editedTask={editedTask}
                   showCompleted={showCompleted}
                 />
-              </Collapse>
-            )}
+              )}
+            </Collapse>
           </Grid>
           <Grid item id="edit-current-task">
             <Collapse
@@ -197,7 +197,7 @@ export const ProjectPage = (props: ProjectPageProps) => {
         </Grid>
       </Grid>
 
-      <Grid item xs={12} md={6} lg={4} sx={{ height: "100%" }}>
+      <Grid item xs={12} sm={12} md={4} lg={4} sx={{ height: "100%" }}>
         <Timer
           activePeriod={DEFAULT_ACTIVE_TIME}
           restPeriod={DEFAULT_REST_TIME}
