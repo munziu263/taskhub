@@ -59,7 +59,10 @@ function App() {
         <Grid container>
           <Grid item xs={12} md={2}>
             <Paper elevation={1} sx={{ height: "100%" }}>
-              <ProjectNavBar handleProjectSelect={handleProjectSelect} />
+              <ProjectNavBar
+                currentProject={currentProject}
+                handleProjectSelect={handleProjectSelect}
+              />
             </Paper>
           </Grid>
           <Grid item xs={12} md={10}>

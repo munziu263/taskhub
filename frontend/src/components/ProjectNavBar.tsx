@@ -2,8 +2,10 @@ import { Button, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import useProjectsApi from "../services/useProjectsApi";
 import { CreateField } from "./CreateField";
+import HomeIcon from "@mui/icons-material/Home";
 
 interface ProjectNavBar {
+  currentProject?: Project;
   handleProjectSelect: any;
 }
 
@@ -42,11 +44,11 @@ export const ProjectNavBar = (props: ProjectNavBar) => {
       <Grid item>
         <Button
           onClick={(event) => props.handleProjectSelect(event)}
-          color="info"
+          color={props.currentProject ? "secondary" : "info"}
           fullWidth
           style={{ justifyContent: "flex-start" }}
         >
-          Home
+          <HomeIcon />
         </Button>
       </Grid>
       {projects
@@ -59,7 +61,11 @@ export const ProjectNavBar = (props: ProjectNavBar) => {
                 onClick={(event) =>
                   props.handleProjectSelect(event, project.id)
                 }
-                color="secondary"
+                color={
+                  props.currentProject && props.currentProject.id == project.id
+                    ? "info"
+                    : "secondary"
+                }
                 fullWidth
                 style={{ justifyContent: "flex-start" }}
               >
