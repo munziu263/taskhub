@@ -1,7 +1,9 @@
-import { Button, Checkbox, TableCell, TableRow } from "@mui/material";
+import { Box, Button, Checkbox, TableCell, TableRow } from "@mui/material";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { PercentageCompleteTimerIcon } from "./PercentageCompleteTimerIcon";
+import TimerIcon from "@mui/icons-material/Timer";
 
 interface TaskTableRowProps {
   task: Task;
@@ -12,9 +14,17 @@ interface TaskTableRowProps {
 }
 
 export const TaskTableRow = (props: TaskTableRowProps) => {
+  const fullTimePeriods = (time: Seconds) => {
+    return Math.floor(time / (25 * 60));
+  };
+
+  const moduloFullTimePeriod = (time: Seconds) => {
+    return (time % (25 * 60)) / (25 * 60);
+  };
+
   return (
     <TableRow>
-      <TableCell style={{ width: "10%" }}>
+      <TableCell style={{ width: "5%" }}>
         <Checkbox
           onChange={(event) => props.handleComplete(event, props.task.id)}
           checked={props.task.complete}
@@ -25,7 +35,7 @@ export const TaskTableRow = (props: TaskTableRowProps) => {
         sx={{
           textDecoration: props.task.complete ? "line-through" : "none",
         }}
-        style={{ width: "30%" }}
+        style={{ width: "25%" }}
       >
         {props.task.name}
       </TableCell>
@@ -39,25 +49,25 @@ export const TaskTableRow = (props: TaskTableRowProps) => {
             xl: "table-cell",
           },
         }}
-        style={{ width: "10%" }}
+        style={{ width: "1fr" }}
       >
-        {props.task.elapsed_time}
+        <Box sx={{ display: "flex" }}>
+          {props.task.elapsed_time &&
+            fullTimePeriods(props.task.elapsed_time) > 0 &&
+            [...Array(fullTimePeriods(props.task.elapsed_time))].map(
+              (element, i) => <TimerIcon key={i} />
+            )}
+          {props.task.elapsed_time &&
+            moduloFullTimePeriod(props.task.elapsed_time) > 0 && (
+              <PercentageCompleteTimerIcon
+                percentageComplete={
+                  (100 * (props.task.elapsed_time % (25 * 60))) / (25 * 60)
+                }
+              />
+            )}
+        </Box>
       </TableCell>
-      <TableCell
-        sx={{
-          display: {
-            xs: "none",
-            sm: "none",
-            md: "none",
-            lg: "table-cell",
-            xl: "table-cell",
-          },
-        }}
-        style={{ width: "15%" }}
-      >
-        {props.task.estimated_time}
-      </TableCell>
-      <TableCell style={{ width: "25%" }}>
+      <TableCell style={{ width: "1fr" }}>
         <Button>
           <ModeEditIcon
             color="secondary"

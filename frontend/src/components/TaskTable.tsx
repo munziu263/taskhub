@@ -70,7 +70,7 @@ export const TaskTable = (props: TaskTableProps) => {
               </TableCell>
             </TableRow>
             <TableRow>
-              <TableCell style={{ width: "15%" }}>Complete</TableCell>
+              <TableCell style={{ width: "5%" }}>Complete</TableCell>
               <TableCell style={{ width: "25%" }}>Name</TableCell>
               <TableCell
                 sx={{
@@ -82,25 +82,11 @@ export const TaskTable = (props: TaskTableProps) => {
                     xl: "table-cell",
                   },
                 }}
-                style={{ width: "10%" }}
+                style={{ width: "1fr" }}
               >
                 Time Elapsed
               </TableCell>
-              <TableCell
-                sx={{
-                  display: {
-                    xs: "none",
-                    sm: "none",
-                    md: "none",
-                    lg: "table-cell",
-                    xl: "table-cell",
-                  },
-                }}
-                style={{ width: "10%" }}
-              >
-                Estimated Time
-              </TableCell>
-              <TableCell style={{ width: "30%" }}></TableCell>
+              <TableCell style={{ width: "1fr" }}></TableCell>
             </TableRow>
           </TableHead>
         )}
