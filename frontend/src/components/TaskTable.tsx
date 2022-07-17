@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import { ChangeEvent, MouseEvent, useState } from "react";
 import { TaskTableRow } from "./TaskTableRow";
+import FlagIcon from "@mui/icons-material/Flag";
 
 interface TaskTableProps {
   tasks: Task[];
@@ -83,17 +84,22 @@ export const TaskTable = (props: TaskTableProps) => {
                     xl: "table-cell",
                   },
                 }}
-                style={{ width: "1fr" }}
+                style={{ width: "30%" }}
               >
                 Time Elapsed
               </TableCell>
-              <TableCell style={{ width: "1fr" }}></TableCell>
+              <TableCell style={{ width: "5%" }}>
+                <FlagIcon />
+              </TableCell>
+              <TableCell style={{ width: "5%" }}></TableCell>
+              <TableCell style={{ width: "5%" }}></TableCell>
+              <TableCell style={{ width: "5%" }}></TableCell>
             </TableRow>
           </TableHead>
         )}
         {props.label && (
           <TableRow>
-            <TableCell colSpan={5} padding="none" width="100%" align="center">
+            <TableCell colSpan={7} padding="none" width="100%" align="center">
               <Box sx={{ pb: 1.5 }}>{props.label}</Box>
             </TableCell>
           </TableRow>

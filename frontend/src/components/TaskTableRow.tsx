@@ -5,10 +5,12 @@ import {
   Collapse,
   TableCell,
   TableRow,
+  useTheme,
 } from "@mui/material";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import DeleteIcon from "@mui/icons-material/Delete";
+import FlagIcon from "@mui/icons-material/Flag";
 import { PercentageCompleteTimerIcon } from "./PercentageCompleteTimerIcon";
 import TimerIcon from "@mui/icons-material/Timer";
 import { Fragment, useState } from "react";
@@ -25,12 +27,23 @@ interface TaskTableRowProps {
 
 export const TaskTableRow = (props: TaskTableRowProps) => {
   const [showEditedTask, setShowEditedTask] = useState<boolean>(false);
+  const theme = useTheme();
 
   const fullTimePeriods = (time: Seconds) => {
     return Math.floor(time / (25 * 60));
   };
   const moduloFullTimePeriod = (time: Seconds) => {
     return (time % (25 * 60)) / (25 * 60);
+  };
+
+  const getPriorityColor = (priority: number) => {
+    if (priority >= 3) {
+      return "error";
+    } else if (priority === 2) {
+      return "warning";
+    } else if (priority === 1) {
+      return "success";
+    }
   };
 
   const toggleShowEditedTask = () => setShowEditedTask(!showEditedTask);
@@ -63,7 +76,7 @@ export const TaskTableRow = (props: TaskTableRowProps) => {
               xl: "table-cell",
             },
           }}
-          style={{ width: "1fr" }}
+          style={{ width: "30%" }}
         >
           <Box sx={{ display: "flex" }}>
             {fullTimePeriods(props.task.elapsed_time) > 0 &&
@@ -79,13 +92,12 @@ export const TaskTableRow = (props: TaskTableRowProps) => {
             )}
           </Box>
         </TableCell>
-        <TableCell style={{ width: "1fr" }}>
-          <Button>
-            <ModeEditIcon
-              color="secondary"
-              onClick={(event) => toggleShowEditedTask()}
-            />
-          </Button>
+        <TableCell style={{ width: "5%" }}>
+          {props.task.priority > 0 && (
+            <FlagIcon color={getPriorityColor(props.task.priority)} />
+          )}
+        </TableCell>
+        <TableCell style={{ width: "5%" }}>
           <Button>
             <PlayArrowIcon
               color="secondary"
@@ -94,6 +106,16 @@ export const TaskTableRow = (props: TaskTableRowProps) => {
               }
             />
           </Button>
+        </TableCell>
+        <TableCell style={{ width: "5%" }}>
+          <Button>
+            <ModeEditIcon
+              color="secondary"
+              onClick={(event) => toggleShowEditedTask()}
+            />
+          </Button>
+        </TableCell>
+        <TableCell style={{ width: "5%" }}>
           <Button>
             <DeleteIcon
               color="secondary"
@@ -105,7 +127,7 @@ export const TaskTableRow = (props: TaskTableRowProps) => {
       <TableRow>
         <TableCell
           style={{ padding: showEditedTask ? "0.5rem" : 0 }}
-          colSpan={5}
+          colSpan={7}
           width="100%"
           align="right"
         >

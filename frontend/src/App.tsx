@@ -25,7 +25,7 @@ const theme = createTheme({
       main: "rgba(215, 38, 61, 1)",
     },
     warning: {
-      main: "#D4CBB3",
+      main: "#FFC857",
     },
     info: {
       main: "#ECE2D0",

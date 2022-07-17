@@ -7,7 +7,7 @@ type Task = {
   estimated_time?: Seconds;
   elapsed_time: Seconds;
   complete: boolean;
-  priority?: number;
+  priority: number;
   deadline?: Date;
 };
 
