@@ -8,8 +8,10 @@ import {
   Paper,
   Switch,
   Box,
+  Collapse,
 } from "@mui/material";
 import { ChangeEvent, MouseEvent, useState } from "react";
+import { EditTaskForm } from "./EditTaskForm";
 import { TaskTableRow } from "./TaskTableRow";
 
 interface TaskTableProps {
@@ -19,6 +21,8 @@ interface TaskTableProps {
   handleUpdateTasks: any;
   handleTimedTaskSelect: any;
   handleEditedTaskSelect: any;
+  handleEditedTaskDeselect: any;
+  handleProjectSelect: any;
   handleDeleteTask: any;
   handleShowCompleted?: any;
   showCompleted: boolean;
@@ -39,6 +43,17 @@ export const TaskTable = (props: TaskTableProps) => {
     }
     const updatedTask: Task = { ...oldTask, complete: event.target.checked };
     props.handleUpdateTasks(updatedTask);
+  };
+  const getEditedTaskIndex = (tasks: Task[], editedTask?: Task) => {
+    if (editedTask) {
+      return tasks
+        .slice(0)
+        .reverse()
+        .sort(sortByPriorityThenByDeadline)
+        .findIndex((task: Task) => editedTask.id === task.id);
+    }
+
+    return tasks.length;
   };
 
   const sortByPriorityThenByDeadline = (a: Task, b: Task) => {
@@ -121,7 +136,51 @@ export const TaskTable = (props: TaskTableProps) => {
                   }
                 />
               );
-            })}
+            })
+            .slice(0, getEditedTaskIndex(props.tasks, props.editedTask))}
+          <TableRow>
+            <TableCell colSpan={5} width="100%" align="right">
+              <Collapse
+                in={props.editedTask ? true : false}
+                orientation="vertical"
+              >
+                {props.editedTask && (
+                  <EditTaskForm
+                    task={props.editedTask}
+                    key={`${props.editedTask.id}_${props.editedTask.name}`}
+                    handleUpdateTasks={props.handleUpdateTasks}
+                    handleEditedTaskDeselect={props.handleEditedTaskDeselect}
+                    handleProjectSelect={props.handleProjectSelect}
+                  ></EditTaskForm>
+                )}
+              </Collapse>
+            </TableCell>
+          </TableRow>
+          {props.tasks
+            .slice(0)
+            .reverse()
+            .sort(sortByPriorityThenByDeadline)
+            .map((task: Task) => {
+              return (
+                <TaskTableRow
+                  task={task}
+                  key={`${task.id}_${task.name}`}
+                  handleComplete={(event: ChangeEvent<HTMLInputElement>) =>
+                    handleComplete(event, task.id)
+                  }
+                  handleTimedTaskSelect={(
+                    event: MouseEvent<HTMLButtonElement>
+                  ) => props.handleTimedTaskSelect(event, task)}
+                  handleEditedTaskSelect={(
+                    event: ChangeEvent<HTMLButtonElement>
+                  ) => props.handleEditedTaskSelect(event, task)}
+                  handleDeleteTask={(event: MouseEvent<HTMLButtonElement>) =>
+                    props.handleDeleteTask(event, task)
+                  }
+                />
+              );
+            })
+            .slice(getEditedTaskIndex(props.tasks, props.editedTask) + 1)}
         </TableBody>
       </Table>
     </Paper>

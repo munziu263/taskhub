@@ -153,6 +153,8 @@ export const ProjectPage = (props: ProjectPageProps) => {
                 handleUpdateTasks={handleUpdateTasks}
                 handleTimedTaskSelect={handleTimedTaskSelect}
                 handleEditedTaskSelect={handleEditedTaskSelect}
+                handleEditedTaskDeselect={handleEditedTaskDeselect}
+                handleProjectSelect={props.handleProjectSelect}
                 handleDeleteTask={handleDeleteTask}
                 handleShowCompleted={handleShowCompleted}
                 showCompleted={showCompleted}
@@ -168,30 +170,13 @@ export const ProjectPage = (props: ProjectPageProps) => {
                   handleUpdateTasks={handleUpdateTasks}
                   handleTimedTaskSelect={handleTimedTaskSelect}
                   handleEditedTaskSelect={handleEditedTaskSelect}
+                  handleEditedTaskDeselect={handleEditedTaskDeselect}
+                  handleProjectSelect={props.handleProjectSelect}
                   handleDeleteTask={handleDeleteTask}
-                  editedTask={editedTask}
                   showCompleted={showCompleted}
+                  editedTask={editedTask}
                 />
               )}
-            </Collapse>
-          </Grid>
-          <Grid item id="edit-current-task">
-            <Collapse
-              in={
-                editedTask && editedTask.project_id == props.currentProject?.id
-              }
-              orientation="vertical"
-            >
-              {editedTask &&
-                editedTask.project_id == props.currentProject?.id && (
-                  <EditTaskForm
-                    task={editedTask}
-                    key={`${editedTask.id}_${editedTask.name}`}
-                    handleUpdateTasks={handleUpdateTasks}
-                    handleEditedTaskDeselect={handleEditedTaskDeselect}
-                    handleProjectSelect={props.handleProjectSelect}
-                  ></EditTaskForm>
-                )}
             </Collapse>
           </Grid>
         </Grid>
