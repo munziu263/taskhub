@@ -5,7 +5,6 @@ import {
   Collapse,
   TableCell,
   TableRow,
-  useTheme,
 } from "@mui/material";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
@@ -27,7 +26,6 @@ interface TaskTableRowProps {
 
 export const TaskTableRow = (props: TaskTableRowProps) => {
   const [showEditedTask, setShowEditedTask] = useState<boolean>(false);
-  const theme = useTheme();
 
   const fullTimePeriods = (time: Seconds) => {
     return Math.floor(time / (25 * 60));
@@ -124,6 +122,7 @@ export const TaskTableRow = (props: TaskTableRowProps) => {
           </Button>
         </TableCell>
       </TableRow>
+
       <TableRow>
         <TableCell
           style={{ padding: showEditedTask ? "0.5rem" : 0 }}

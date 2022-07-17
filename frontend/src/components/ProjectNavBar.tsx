@@ -4,12 +4,12 @@ import useProjectsApi from "../services/useProjectsApi";
 import { CreateField } from "./CreateField";
 import HomeIcon from "@mui/icons-material/Home";
 
-interface ProjectNavBar {
+interface ProjectNavBarProps {
   currentProject?: Project;
   handleProjectSelect: any;
 }
 
-export const ProjectNavBar = (props: ProjectNavBar) => {
+export const ProjectNavBar = (props: ProjectNavBarProps) => {
   const [projects, setProjects] = useState<Project[]>([]);
   const { projectsApi } = useProjectsApi();
 
@@ -62,7 +62,7 @@ export const ProjectNavBar = (props: ProjectNavBar) => {
                   props.handleProjectSelect(event, project.id)
                 }
                 color={
-                  props.currentProject && props.currentProject.id == project.id
+                  props.currentProject && props.currentProject.id === project.id
                     ? "info"
                     : "secondary"
                 }

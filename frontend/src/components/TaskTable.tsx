@@ -7,8 +7,10 @@ import {
   Paper,
   Switch,
   Box,
+  tableCellClasses,
+  useTheme,
 } from "@mui/material";
-import { ChangeEvent, MouseEvent, useState } from "react";
+import { ChangeEvent, Fragment, MouseEvent } from "react";
 import { TaskTableRow } from "./TaskTableRow";
 import FlagIcon from "@mui/icons-material/Flag";
 
@@ -25,7 +27,7 @@ interface TaskTableProps {
 }
 
 export const TaskTable = (props: TaskTableProps) => {
-  const [showEditedTask, setShowEditedTask] = useState<boolean>(false);
+  const theme = useTheme();
   const handleComplete = (
     event: ChangeEvent<HTMLInputElement>,
     taskId: number
@@ -54,24 +56,45 @@ export const TaskTable = (props: TaskTableProps) => {
     return B_PRIORITY - A_PRIORITY || B_DEADLINE - A_DEADLINE;
   };
 
-  const toggleShowEditedTask = () => setShowEditedTask(!showEditedTask);
-
   return (
-    <Paper sx={{ p: 1 }}>
-      <Table>
+    <Fragment>
+      {props.header && (
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "center",
+            padding: "0.3rem",
+            width: "100%",
+            fontSize: "small",
+          }}
+        >
+          <Switch
+            checked={props.showCompleted}
+            onChange={props.handleShowCompleted}
+            color="secondary"
+            size="small"
+          />
+          Show Completed
+        </Box>
+      )}
+
+      <Table
+        sx={{
+          [`& .${tableCellClasses.root}`]: {
+            borderBottom: "none",
+          },
+        }}
+      >
         {props.header && (
           <TableHead>
-            <TableRow>
-              <TableCell colSpan={7} padding="none" width="100%" align="right">
-                <Switch
-                  checked={props.showCompleted}
-                  onChange={props.handleShowCompleted}
-                  color="secondary"
-                />
-                Show Completed
-              </TableCell>
-            </TableRow>
-            <TableRow>
+            <TableRow
+              sx={{
+                [`& .${tableCellClasses.root}`]: {
+                  borderBottom: 1,
+                },
+              }}
+            >
               <TableCell style={{ width: "5%" }}>Complete</TableCell>
               <TableCell style={{ width: "25%" }}>Name</TableCell>
               <TableCell
@@ -98,9 +121,9 @@ export const TaskTable = (props: TaskTableProps) => {
           </TableHead>
         )}
         {props.label && (
-          <TableRow>
+          <TableRow style={{ backgroundColor: theme.palette.primary.dark }}>
             <TableCell colSpan={7} padding="none" width="100%" align="center">
-              <Box sx={{ pb: 1.5 }}>{props.label}</Box>
+              <Box sx={{ p: "0.5rem" }}>{props.label}</Box>
             </TableCell>
           </TableRow>
         )}
@@ -130,6 +153,6 @@ export const TaskTable = (props: TaskTableProps) => {
             })}
         </TableBody>
       </Table>
-    </Paper>
+    </Fragment>
   );
 };
