@@ -62,7 +62,7 @@ export const TaskTable = (props: TaskTableProps) => {
         {props.header && (
           <TableHead>
             <TableRow>
-              <TableCell colSpan={5} padding="none" width="100%" align="right">
+              <TableCell colSpan={7} padding="none" width="100%" align="right">
                 <Switch
                   checked={props.showCompleted}
                   onChange={props.handleShowCompleted}
