@@ -4,7 +4,7 @@ type Task = {
   id: number;
   name: string;
   project_id?: number;
-  estimated_time?: Seconds;
+  estimated_time: Seconds;
   elapsed_time: Seconds;
   complete: boolean;
   priority: number;

@@ -1,10 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { Avatar, Button, Chip, Grid, Paper, Typography } from "@mui/material";
+import { Avatar, Button, Chip, Grid, Typography } from "@mui/material";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import { accurateTimer } from "../shared/util/accurateTimer";
-import { convertTypeAcquisitionFromJson } from "typescript";
-import { Task } from "@mui/icons-material";
 
 interface TimerProps {
   activePeriod: Seconds;
@@ -91,6 +89,9 @@ const Timer = (props: TimerProps) => {
     }
 
     console.log(`${props.task?.name}: Start time - ${startTime}`);
+    if (props.task && isPaused) {
+      toggle();
+    }
   }, [props.task]);
 
   return (

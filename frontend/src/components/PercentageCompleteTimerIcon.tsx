@@ -1,13 +1,15 @@
-import { Box } from "@mui/material";
+import { Box, useTheme } from "@mui/material";
 import TimerIcon from "@mui/icons-material/Timer";
 
 interface PercentageCompleteTimerIconProps {
   percentageComplete: number;
+  highPriority: boolean;
 }
 
 export const PercentageCompleteTimerIcon = (
   props: PercentageCompleteTimerIconProps
 ) => {
+  const theme = useTheme();
   return (
     <Box
       sx={{
@@ -25,7 +27,9 @@ export const PercentageCompleteTimerIcon = (
           right: "0",
           height: "100%",
           width: `${100 - props.percentageComplete}%`,
-          backgroundColor: "#0f2536",
+          backgroundColor: props.highPriority
+            ? theme.palette.primary.dark
+            : theme.palette.primary.main,
           zIndex: 1,
         }}
       ></Box>

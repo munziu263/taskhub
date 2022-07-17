@@ -5,15 +5,15 @@ import {
   Collapse,
   TableCell,
   TableRow,
+  useTheme,
 } from "@mui/material";
 import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import DeleteIcon from "@mui/icons-material/Delete";
 import FlagIcon from "@mui/icons-material/Flag";
-import { PercentageCompleteTimerIcon } from "./PercentageCompleteTimerIcon";
-import TimerIcon from "@mui/icons-material/Timer";
 import { Fragment, useState } from "react";
 import { EditTaskForm } from "./EditTaskForm";
+import { ElapsedVersusEstimatedTimeProgressBar } from "./ElapsedVersusEstimatedTimeProgressBar";
 
 interface TaskTableRowProps {
   task: Task;
@@ -26,13 +26,7 @@ interface TaskTableRowProps {
 
 export const TaskTableRow = (props: TaskTableRowProps) => {
   const [showEditedTask, setShowEditedTask] = useState<boolean>(false);
-
-  const fullTimePeriods = (time: Seconds) => {
-    return Math.floor(time / (25 * 60));
-  };
-  const moduloFullTimePeriod = (time: Seconds) => {
-    return (time % (25 * 60)) / (25 * 60);
-  };
+  const theme = useTheme();
 
   const getPriorityColor = (priority: number) => {
     if (priority >= 3) {
@@ -44,11 +38,20 @@ export const TaskTableRow = (props: TaskTableRowProps) => {
     }
   };
 
+  const highPriority = (priority: number) => priority >= 3;
+
   const toggleShowEditedTask = () => setShowEditedTask(!showEditedTask);
 
   return (
     <Fragment>
-      <TableRow>
+      <TableRow
+        sx={{
+          boxShadow: 5,
+          bgcolor: highPriority(props.task.priority)
+            ? theme.palette.primary.dark
+            : theme.palette.primary.main,
+        }}
+      >
         <TableCell style={{ width: "5%" }}>
           <Checkbox
             onChange={(event) => props.handleComplete(event, props.task.id)}
@@ -74,28 +77,20 @@ export const TaskTableRow = (props: TaskTableRowProps) => {
               xl: "table-cell",
             },
           }}
-          style={{ width: "30%" }}
+          style={{ width: "40%" }}
         >
-          <Box sx={{ display: "flex" }}>
-            {fullTimePeriods(props.task.elapsed_time) > 0 &&
-              [...Array(fullTimePeriods(props.task.elapsed_time))].map(
-                (element, i) => <TimerIcon key={i} />
-              )}
-            {moduloFullTimePeriod(props.task.elapsed_time) > 0 && (
-              <PercentageCompleteTimerIcon
-                percentageComplete={
-                  (100 * (props.task.elapsed_time % (25 * 60))) / (25 * 60)
-                }
-              />
-            )}
-          </Box>
+          <ElapsedVersusEstimatedTimeProgressBar
+            elapsed_time={props.task.elapsed_time}
+            estimated_time={props.task.estimated_time}
+            highPriority={highPriority(props.task.priority)}
+          />
         </TableCell>
-        <TableCell style={{ width: "5%" }}>
+        <TableCell style={{ width: "3%" }}>
           {props.task.priority > 0 && (
             <FlagIcon color={getPriorityColor(props.task.priority)} />
           )}
         </TableCell>
-        <TableCell style={{ width: "5%" }}>
+        <TableCell style={{ width: "3%" }}>
           <Button>
             <PlayArrowIcon
               color="secondary"
@@ -105,7 +100,7 @@ export const TaskTableRow = (props: TaskTableRowProps) => {
             />
           </Button>
         </TableCell>
-        <TableCell style={{ width: "5%" }}>
+        <TableCell style={{ width: "3%" }}>
           <Button>
             <ModeEditIcon
               color="secondary"
@@ -113,7 +108,7 @@ export const TaskTableRow = (props: TaskTableRowProps) => {
             />
           </Button>
         </TableCell>
-        <TableCell style={{ width: "5%" }}>
+        <TableCell style={{ width: "3%" }}>
           <Button>
             <DeleteIcon
               color="secondary"

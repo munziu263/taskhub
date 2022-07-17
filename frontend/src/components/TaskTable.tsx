@@ -1,18 +1,14 @@
 import {
   Table,
   TableBody,
-  TableHead,
   TableRow,
   TableCell,
-  Paper,
   Switch,
   Box,
   tableCellClasses,
-  useTheme,
 } from "@mui/material";
 import { ChangeEvent, Fragment, MouseEvent } from "react";
 import { TaskTableRow } from "./TaskTableRow";
-import FlagIcon from "@mui/icons-material/Flag";
 
 interface TaskTableProps {
   tasks: Task[];
@@ -27,7 +23,6 @@ interface TaskTableProps {
 }
 
 export const TaskTable = (props: TaskTableProps) => {
-  const theme = useTheme();
   const handleComplete = (
     event: ChangeEvent<HTMLInputElement>,
     taskId: number
@@ -65,6 +60,7 @@ export const TaskTable = (props: TaskTableProps) => {
             justifyContent: "flex-end",
             alignItems: "center",
             padding: "0.3rem",
+            paddingRight: "1rem",
             width: "100%",
             fontSize: "small",
           }}
@@ -86,42 +82,8 @@ export const TaskTable = (props: TaskTableProps) => {
           },
         }}
       >
-        {props.header && (
-          <TableHead>
-            <TableRow
-              sx={{
-                [`& .${tableCellClasses.root}`]: {
-                  borderBottom: 1,
-                },
-              }}
-            >
-              <TableCell style={{ width: "5%" }}>Complete</TableCell>
-              <TableCell style={{ width: "25%" }}>Name</TableCell>
-              <TableCell
-                sx={{
-                  display: {
-                    xs: "none",
-                    sm: "none",
-                    md: "none",
-                    lg: "table-cell",
-                    xl: "table-cell",
-                  },
-                }}
-                style={{ width: "30%" }}
-              >
-                Time Elapsed
-              </TableCell>
-              <TableCell style={{ width: "5%" }}>
-                <FlagIcon />
-              </TableCell>
-              <TableCell style={{ width: "5%" }}></TableCell>
-              <TableCell style={{ width: "5%" }}></TableCell>
-              <TableCell style={{ width: "5%" }}></TableCell>
-            </TableRow>
-          </TableHead>
-        )}
         {props.label && (
-          <TableRow style={{ backgroundColor: theme.palette.primary.dark }}>
+          <TableRow sx={{ boxShadow: 1 }}>
             <TableCell colSpan={7} padding="none" width="100%" align="center">
               <Box sx={{ p: "0.5rem" }}>{props.label}</Box>
             </TableCell>

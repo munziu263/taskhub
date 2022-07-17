@@ -120,7 +120,7 @@ export const ProjectPage = (props: ProjectPageProps) => {
 
   return (
     <Grid container direction="row" padding={2} spacing={1} alignItems="center">
-      <Grid item xs={12} sm={12} md={6} lg={8}>
+      <Grid item xs={12} sm={12} lg={7}>
         <Grid container direction="column" spacing={2}>
           <Grid item>
             <Typography variant="h2">
@@ -130,7 +130,7 @@ export const ProjectPage = (props: ProjectPageProps) => {
           <Grid item>
             <CreateField handleCreate={handleCreateTask} obj_type={"task"} />
           </Grid>
-          <Grid item style={{ width: "100%" }}>
+          <Grid item>
             {uncomplete(tasks) && (
               <TaskTable
                 tasks={uncomplete(tasks) ? uncomplete(tasks) : []}
@@ -167,7 +167,7 @@ export const ProjectPage = (props: ProjectPageProps) => {
         </Grid>
       </Grid>
 
-      <Grid item xs={12} sm={12} md={6} lg={4}>
+      <Grid item xs={12} sm={12} lg={5}>
         <Timer
           activePeriod={DEFAULT_ACTIVE_TIME}
           restPeriod={DEFAULT_REST_TIME}
