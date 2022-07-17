@@ -4,8 +4,8 @@ import { ChangeEvent, FormEvent, useState } from "react";
 interface EditTaskFormProps {
   task: Task;
   handleUpdateTasks: any;
-  handleEditedTaskDeselect: any;
   handleProjectSelect: any;
+  toggleShowEditedTask: any;
 }
 
 export const EditTaskForm = (props: EditTaskFormProps) => {
@@ -20,7 +20,7 @@ export const EditTaskForm = (props: EditTaskFormProps) => {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     props.handleUpdateTasks(taskValues);
-    props.handleEditedTaskDeselect();
+    props.toggleShowEditedTask();
     if (taskValues.project_id !== props.task.project_id) {
       props.handleProjectSelect(event, taskValues.project_id);
     }
@@ -29,7 +29,7 @@ export const EditTaskForm = (props: EditTaskFormProps) => {
   return (
     props.task && (
       <form onSubmit={handleSubmit}>
-        <Grid container spacing={2} gridTemplateColumns="repeat(3, 1fr)">
+        <Grid container spacing={2}>
           <Grid item xs={12} sm={6} lg={4} xl={4}>
             <TextField
               id="name-input"
@@ -70,7 +70,7 @@ export const EditTaskForm = (props: EditTaskFormProps) => {
               name="estimated_time"
               label="Estimated Time"
               type="number"
-              value={taskValues.estimated_time ? taskValues.estimated_time : 0}
+              value={taskValues.estimated_time}
               onChange={handleChange}
               fullWidth
             />
@@ -93,7 +93,7 @@ export const EditTaskForm = (props: EditTaskFormProps) => {
               name="priority"
               label="Priority Level"
               type="number"
-              value={taskValues.priority ? taskValues.priority : 0}
+              value={taskValues.priority}
               onChange={handleChange}
               fullWidth
             />

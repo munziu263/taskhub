@@ -59,7 +59,7 @@ class Task(CRUDMixin, db.Model):
     estimated_time = db.Column(db.Integer, default=0)
     elapsed_time = db.Column(db.Integer, nullable=False, default=0)
     complete = db.Column(db.Boolean, nullable=False, default=False)
-    priority = db.Column(db.Integer)
+    priority = db.Column(db.Integer, default=0)
     deadline = db.Column(db.DateTime)
     # --- Relationships
     project_id = db.Column(db.Integer, db.ForeignKey("project.id"))

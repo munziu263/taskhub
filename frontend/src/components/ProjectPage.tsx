@@ -3,7 +3,6 @@ import { MouseEvent, ChangeEvent, useEffect, useState } from "react";
 import useProjectsApi from "../services/useProjectsApi";
 import useTasksApi from "../services/useTasksApi";
 import { CreateField } from "./CreateField";
-import { EditTaskForm } from "./EditTaskForm";
 import { TaskTable } from "./TaskTable";
 import { Timer } from "./Timer";
 
@@ -23,7 +22,6 @@ export const ProjectPage = (props: ProjectPageProps) => {
 
   const [tasks, setTasks] = useState<Task[]>([]);
   const [timedTask, setTimedTask] = useState<Task>();
-  const [editedTask, setEditedTask] = useState<Task>();
   const [showCompleted, setShowCompleted] = useState<boolean>(false);
 
   const endPeriodHandler = () => alert("Period Ended");
@@ -102,18 +100,6 @@ export const ProjectPage = (props: ProjectPageProps) => {
     setTimedTask(undefined);
   };
 
-  const handleEditedTaskSelect = (
-    event: MouseEvent<HTMLButtonElement>,
-    task: Task
-  ) => {
-    event.preventDefault();
-    setEditedTask(task);
-  };
-
-  const handleEditedTaskDeselect = () => {
-    setEditedTask(undefined);
-  };
-
   const handleShowCompleted = (event: ChangeEvent<HTMLInputElement>) => {
     setShowCompleted((prevState: boolean) => !prevState);
   };
@@ -144,7 +130,7 @@ export const ProjectPage = (props: ProjectPageProps) => {
           <Grid item>
             <CreateField handleCreate={handleCreateTask} obj_type={"task"} />
           </Grid>
-          <Grid item>
+          <Grid item style={{ width: "100%" }}>
             {uncomplete(tasks) && (
               <TaskTable
                 tasks={uncomplete(tasks) ? uncomplete(tasks) : []}
@@ -152,16 +138,18 @@ export const ProjectPage = (props: ProjectPageProps) => {
                 label={undefined}
                 handleUpdateTasks={handleUpdateTasks}
                 handleTimedTaskSelect={handleTimedTaskSelect}
-                handleEditedTaskSelect={handleEditedTaskSelect}
-                handleEditedTaskDeselect={handleEditedTaskDeselect}
                 handleProjectSelect={props.handleProjectSelect}
                 handleDeleteTask={handleDeleteTask}
                 handleShowCompleted={handleShowCompleted}
                 showCompleted={showCompleted}
-                editedTask={editedTask}
               />
             )}
-            <Collapse in={showCompleted} orientation="vertical">
+            <Collapse
+              in={showCompleted}
+              orientation="vertical"
+              timeout="auto"
+              unmountOnExit
+            >
               {showCompleted && completed(tasks) && (
                 <TaskTable
                   tasks={completed(tasks) ? completed(tasks) : []}
@@ -169,12 +157,9 @@ export const ProjectPage = (props: ProjectPageProps) => {
                   label={"Completed"}
                   handleUpdateTasks={handleUpdateTasks}
                   handleTimedTaskSelect={handleTimedTaskSelect}
-                  handleEditedTaskSelect={handleEditedTaskSelect}
-                  handleEditedTaskDeselect={handleEditedTaskDeselect}
                   handleProjectSelect={props.handleProjectSelect}
                   handleDeleteTask={handleDeleteTask}
                   showCompleted={showCompleted}
-                  editedTask={editedTask}
                 />
               )}
             </Collapse>
@@ -182,7 +167,7 @@ export const ProjectPage = (props: ProjectPageProps) => {
         </Grid>
       </Grid>
 
-      <Grid item xs={12} sm={12} md={4} lg={4} sx={{ height: "100%" }}>
+      <Grid item xs={12} sm={12} md={6} lg={4}>
         <Timer
           activePeriod={DEFAULT_ACTIVE_TIME}
           restPeriod={DEFAULT_REST_TIME}
