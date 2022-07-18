@@ -1,5 +1,7 @@
-import { Button, TextField, Grid } from "@mui/material";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { Button, TextField, Grid, MenuItem } from "@mui/material";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import useProjectsApi from "../services/useProjectsApi";
+import HomeIcon from "@mui/icons-material/Home";
 
 interface EditTaskFormProps {
   task: Task;
@@ -10,6 +12,8 @@ interface EditTaskFormProps {
 
 export const EditTaskForm = (props: EditTaskFormProps) => {
   const [taskValues, setTaskValues] = useState<Task>(props.task);
+  const [projects, setProjects] = useState<Project[]>();
+  const { projectsApi } = useProjectsApi();
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
@@ -25,6 +29,15 @@ export const EditTaskForm = (props: EditTaskFormProps) => {
       props.handleProjectSelect(event, taskValues.project_id);
     }
   };
+
+  useEffect(() => {
+    projectsApi
+      .get_all()
+      .then((projects: Project[]) => {
+        setProjects(projects);
+      })
+      .catch((err: Error) => console.log(err));
+  }, []);
 
   return (
     props.task && (
@@ -43,14 +56,29 @@ export const EditTaskForm = (props: EditTaskFormProps) => {
           </Grid>
           <Grid item xs={12} sm={6} lg={4} xl={4}>
             <TextField
-              id="project-id-input"
+              id="project-input"
               name="project_id"
-              label="Project ID"
-              type="number"
-              value={taskValues.project_id}
+              label="Project"
+              type="text"
               onChange={handleChange}
               fullWidth
-            />
+              select
+            >
+              <MenuItem value={0}>
+                <HomeIcon />
+              </MenuItem>
+              {projects &&
+                projects
+                  .slice(0)
+                  .reverse()
+                  .map((project: Project) => {
+                    return (
+                      <MenuItem value={project.id} key={project.id}>
+                        {project.name.toUpperCase()}
+                      </MenuItem>
+                    );
+                  })}
+            </TextField>
           </Grid>
           <Grid item xs={12} sm={6} lg={4} xl={4}>
             {" "}
@@ -92,11 +120,16 @@ export const EditTaskForm = (props: EditTaskFormProps) => {
               id="priority-input"
               name="priority"
               label="Priority Level"
-              type="number"
-              value={taskValues.priority}
+              type="text"
               onChange={handleChange}
               fullWidth
-            />
+              select
+            >
+              <MenuItem value={0}>Low</MenuItem>
+              <MenuItem value={1}>Medium</MenuItem>
+              <MenuItem value={2}>High</MenuItem>
+              <MenuItem value={3}>Very High</MenuItem>
+            </TextField>
           </Grid>
           <Grid item xs={12}>
             <Button

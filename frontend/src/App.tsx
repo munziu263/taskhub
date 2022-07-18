@@ -1,4 +1,3 @@
-import { WidgetsSharp } from "@mui/icons-material";
 import {
   Box,
   CssBaseline,
