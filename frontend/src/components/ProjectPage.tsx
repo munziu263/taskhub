@@ -119,7 +119,7 @@ export const ProjectPage = (props: ProjectPageProps) => {
   }, [props.currentProject]);
 
   return (
-    <Grid container direction="row" padding={2} spacing={1} alignItems="center">
+    <Grid container direction="row" padding={2} spacing={1} alignItems="start">
       <Grid item xs={12} sm={12} lg={7}>
         <Grid container direction="column" spacing={2}>
           <Grid item>

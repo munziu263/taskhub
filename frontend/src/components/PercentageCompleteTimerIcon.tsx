@@ -4,6 +4,7 @@ import TimerIcon from "@mui/icons-material/Timer";
 interface PercentageCompleteTimerIconProps {
   percentageComplete: number;
   highPriority: boolean;
+  color?: string;
 }
 
 export const PercentageCompleteTimerIcon = (
@@ -44,7 +45,7 @@ export const PercentageCompleteTimerIcon = (
           width: "100%",
         }}
       >
-        <TimerIcon />
+        <TimerIcon color={props.color ? "secondary" : "inherit"} />
       </Box>
     </Box>
   );

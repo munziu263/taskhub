@@ -80,6 +80,14 @@ export const TaskTable = (props: TaskTableProps) => {
           [`& .${tableCellClasses.root}`]: {
             borderBottom: "none",
           },
+          [`& td:first-child`]: {
+            borderTopLeftRadius: "10px",
+            borderBottomLeftRadius: "10px",
+          },
+          [`& td:last-child`]: {
+            borderTopRightRadius: "10px",
+            borderBottomRightRadius: "10px",
+          },
         }}
       >
         {props.label && (

@@ -21,61 +21,38 @@ export const ElapsedVersusEstimatedTimeProgressBar = (
     <Box
       sx={{
         display: "flex",
-        // position: "relative",
-        // width: "100%",
-        // height: "100%",
-        // alignItems: "right",
+        position: "relative",
+        width: "100%",
+        height: "100%",
+        alignItems: "right",
       }}
     >
-      {/* <Box
-        sx={{
-          position: "absolute",
-          top: "0",
-          bottom: "0",
-          right: "0",
-          height: "100%",
-          width: "100%",
-        }}
-      >
-        {fullTimePeriods(props.estimated_time) > 0 &&
-          [...Array(fullTimePeriods(props.estimated_time))].map(
-            (element, i) => <TimerIcon color="secondary" key={i} />
-          )}
-        {moduloFullTimePeriod(props.estimated_time) > 0 && (
-          <PercentageCompleteTimerIcon
-            percentageComplete={
-              (100 * (props.estimated_time % (25 * 60))) / (25 * 60)
-            }
-            highPriority={props.highPriority}
-          />
-        )}
-      </Box> */}
-      <Box
-        sx={
-          {
-            //   position: "absolute",
-            //   top: "0",
-            //   bottom: "0",
-            //   left: "0",
-            //   right: "0",
-            //   height: "100%",
-            //   width: "100%",
+      {fullTimePeriods(props.elapsed_time) > 0 &&
+        [...Array(fullTimePeriods(props.elapsed_time))].map((element, i) => (
+          <TimerIcon key={i} />
+        ))}
+      {moduloFullTimePeriod(props.elapsed_time) > 0 && (
+        <PercentageCompleteTimerIcon
+          percentageComplete={
+            (100 * (props.elapsed_time % (25 * 60))) / (25 * 60)
           }
-        }
-      >
-        {fullTimePeriods(props.elapsed_time) > 0 &&
-          [...Array(fullTimePeriods(props.elapsed_time))].map((element, i) => (
-            <TimerIcon key={i} />
-          ))}
-        {moduloFullTimePeriod(props.elapsed_time) > 0 && (
-          <PercentageCompleteTimerIcon
-            percentageComplete={
-              (100 * (props.elapsed_time % (25 * 60))) / (25 * 60)
-            }
-            highPriority={props.highPriority}
-          />
-        )}
-      </Box>
+          highPriority={props.highPriority}
+        />
+      )}
+      {props.estimated_time > 0 && <Box>/</Box>}
+      {fullTimePeriods(props.estimated_time) > 0 &&
+        [...Array(fullTimePeriods(props.estimated_time))].map((element, i) => (
+          <TimerIcon color="secondary" key={i} />
+        ))}
+      {moduloFullTimePeriod(props.estimated_time) > 0 && (
+        <PercentageCompleteTimerIcon
+          percentageComplete={
+            (100 * (props.estimated_time % (25 * 60))) / (25 * 60)
+          }
+          highPriority={props.highPriority}
+          color="secondary"
+        />
+      )}
     </Box>
   );
 };

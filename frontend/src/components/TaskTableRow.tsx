@@ -46,13 +46,14 @@ export const TaskTableRow = (props: TaskTableRowProps) => {
     <Fragment>
       <TableRow
         sx={{
-          boxShadow: 5,
+          boxShadow: highPriority(props.task.priority) ? 5 : 2,
+          borderRadius: "10px",
           bgcolor: highPriority(props.task.priority)
             ? theme.palette.primary.dark
             : theme.palette.primary.main,
         }}
       >
-        <TableCell style={{ width: "5%" }}>
+        <TableCell>
           <Checkbox
             onChange={(event) => props.handleComplete(event, props.task.id)}
             checked={props.task.complete}
@@ -63,7 +64,6 @@ export const TaskTableRow = (props: TaskTableRowProps) => {
           sx={{
             textDecoration: props.task.complete ? "line-through" : "none",
           }}
-          style={{ width: "25%" }}
         >
           {props.task.name}
         </TableCell>
@@ -77,7 +77,6 @@ export const TaskTableRow = (props: TaskTableRowProps) => {
               xl: "table-cell",
             },
           }}
-          style={{ width: "40%" }}
         >
           <ElapsedVersusEstimatedTimeProgressBar
             elapsed_time={props.task.elapsed_time}
@@ -85,12 +84,12 @@ export const TaskTableRow = (props: TaskTableRowProps) => {
             highPriority={highPriority(props.task.priority)}
           />
         </TableCell>
-        <TableCell style={{ width: "3%" }}>
+        <TableCell>
           {props.task.priority > 0 && (
             <FlagIcon color={getPriorityColor(props.task.priority)} />
           )}
         </TableCell>
-        <TableCell style={{ width: "3%" }}>
+        <TableCell>
           <Button>
             <PlayArrowIcon
               color="secondary"
@@ -100,7 +99,7 @@ export const TaskTableRow = (props: TaskTableRowProps) => {
             />
           </Button>
         </TableCell>
-        <TableCell style={{ width: "3%" }}>
+        <TableCell>
           <Button>
             <ModeEditIcon
               color="secondary"
@@ -108,7 +107,7 @@ export const TaskTableRow = (props: TaskTableRowProps) => {
             />
           </Button>
         </TableCell>
-        <TableCell style={{ width: "3%" }}>
+        <TableCell>
           <Button>
             <DeleteIcon
               color="secondary"

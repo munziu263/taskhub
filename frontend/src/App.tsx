@@ -1,3 +1,4 @@
+import { WidgetsSharp } from "@mui/icons-material";
 import {
   Box,
   CssBaseline,
@@ -55,10 +56,10 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box>
-        <Grid container>
+      <Box sx={{ m: 0.5, p: 1, height: "100vh" }}>
+        <Grid container sx={{ height: { md: "100%" } }}>
           <Grid item xs={12} md={2}>
-            <Paper elevation={1} sx={{ height: "100%" }}>
+            <Paper elevation={1} sx={{ height: { md: "100%" } }}>
               <ProjectNavBar
                 currentProject={currentProject}
                 handleProjectSelect={handleProjectSelect}
