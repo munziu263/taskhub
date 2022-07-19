@@ -1,12 +1,12 @@
-import { Container, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import { ChangeEvent, FormEvent, useState } from "react";
 
-interface CreateField {
+interface CreateFieldProps {
   handleCreate: any;
   obj_type: string;
 }
 
-const CreateField = (props: CreateField) => {
+const CreateField = (props: CreateFieldProps) => {
   const [value, setValue] = useState<string>("");
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
