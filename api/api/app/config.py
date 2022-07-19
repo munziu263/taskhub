@@ -1,6 +1,4 @@
-db_path = "./api/app/database.sqlite"
-
-"""Flask configuration."""
+import os
 
 
 class Config:
@@ -11,6 +9,9 @@ class Config:
 
 
 class ProdConfig(Config):
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
     TESTING = False
 
-    SQLALCHEMY_DATABASE_URI = "sqlite:///" + db_path
+    SQLALCHEMY_DATABASE_URI = os.getenv(
+        "postgresql://munziu:secret@db:5432/taskhub", "sqlite://"
+    )

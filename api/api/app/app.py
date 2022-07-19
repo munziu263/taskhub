@@ -6,7 +6,7 @@ from models import db, ma
 cors = CORS()
 
 
-def init_app(config_filename="config.Config"):
+def init_app(config_filename="config.ProdConfig"):
     # --- Initialize core application
     app = Flask(__name__)
     app.config.from_object(config_filename)
