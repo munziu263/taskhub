@@ -16,7 +16,7 @@ const CreateField = (props: CreateFieldProps) => {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    props.handleCreate(value);
+    props.handleCreate(event, value);
     setValue("");
   };
 

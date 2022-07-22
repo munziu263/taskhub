@@ -1,5 +1,5 @@
 import { Collapse, Grid, Typography } from "@mui/material";
-import { MouseEvent, ChangeEvent, useEffect, useState } from "react";
+import { MouseEvent, ChangeEvent, useEffect, useState, FormEvent } from "react";
 import useProjectsApi from "../services/useProjectsApi";
 import useTasksApi from "../services/useTasksApi";
 import { CreateField } from "./CreateField";
@@ -40,7 +40,11 @@ export const ProjectPage = (props: ProjectPageProps) => {
       });
   };
 
-  const handleCreateTask = (newTask: string) => {
+  const handleCreateTask = (
+    event: FormEvent<HTMLFormElement>,
+    newTask: string
+  ) => {
+    event.preventDefault();
     // add task without project
     if (props.currentProject === undefined) {
       tasksApi.create(newTask).then((createdTask: Task) => {

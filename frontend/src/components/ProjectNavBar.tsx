@@ -5,7 +5,7 @@ import {
   TextField,
   useMediaQuery,
 } from "@mui/material";
-import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
+import { FormEvent, MouseEvent, useEffect, useState } from "react";
 import useProjectsApi from "../services/useProjectsApi";
 import { CreateField } from "./CreateField";
 import HomeIcon from "@mui/icons-material/Home";
@@ -29,13 +29,6 @@ export const ProjectNavBar = (props: ProjectNavBarProps) => {
     theme.breakpoints.down("md")
   );
 
-  const handleChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    event.preventDefault();
-    setValue(event.target.value);
-  };
-
   useEffect(() => {
     projectsApi
       .get_all()
@@ -47,14 +40,25 @@ export const ProjectNavBar = (props: ProjectNavBarProps) => {
       });
   }, []);
 
-  const handleCreateProject = (newProject: string) => {
-    projectsApi.create(newProject).then((createdProject: Project) => {
-      setProjects((prevState: Project[]) => [...prevState, createdProject]);
-    });
+  const handleCreateProject = (
+    event: FormEvent<HTMLFormElement>,
+    newProject: string
+  ) => {
+    event.preventDefault();
+    projectsApi
+      .create(newProject)
+      .then((createdProject: Project) => {
+        setProjects((prevState: Project[]) => [...prevState, createdProject]);
+        props.handleProjectSelect(event, createdProject.id);
+        setValue(createdProject.name);
+      })
+      .catch((err: Error) => {
+        console.log(err);
+      });
   };
 
   const handleDeleteProject = (
-    event: MouseEvent<SVGSVGElement>,
+    event: MouseEvent<HTMLButtonElement>,
     deletedProject: Project
   ) => {
     event.preventDefault();
@@ -68,21 +72,28 @@ export const ProjectNavBar = (props: ProjectNavBarProps) => {
           console.log(err);
         });
     });
-    projectsApi.remove(deletedProject.id).then((updatedProjects: Project[]) => {
-      setProjects(updatedProjects);
-    });
+    projectsApi
+      .remove(deletedProject.id)
+      .then((updatedProjects: Project[]) => {
+        setProjects(updatedProjects);
+      })
+      .catch((err: Error) => {
+        console.log(err);
+      });
     props.handleProjectSelect(event, undefined);
+    setValue("");
   };
 
   return (
     <Grid
       container
       id="project-selector"
-      direction="column"
+      direction={isSmallScreen ? "row" : "column"}
+      justifyContent="space-between"
       padding={1}
       spacing={2}
     >
-      <Grid item>
+      <Grid item xs={12}>
         <CreateField handleCreate={handleCreateProject} obj_type={"project"} />
       </Grid>
       {!isSmallScreen && (
@@ -104,68 +115,85 @@ export const ProjectNavBar = (props: ProjectNavBarProps) => {
           .map((project: Project) => {
             return (
               <Grid item key={project.id}>
-                <Button
-                  onClick={(event) =>
-                    props.handleProjectSelect(event, project.id)
-                  }
-                  color={
-                    props.currentProject &&
-                    props.currentProject.id === project.id
-                      ? "info"
-                      : "secondary"
-                  }
-                  fullWidth
-                  style={{ justifyContent: "flex-start" }}
+                <Grid
+                  container
+                  justifyContent={"space-between"}
+                  alignItems={"center"}
                 >
-                  {project.name}
-                </Button>
-                <Button>
-                  <DeleteIcon
-                    color="secondary"
-                    onClick={(event) => handleDeleteProject(event, project)}
-                  />
-                </Button>
+                  <Grid item xs={6} sm={9}>
+                    <Button
+                      onClick={(event) =>
+                        props.handleProjectSelect(event, project.id)
+                      }
+                      color={
+                        props.currentProject &&
+                        props.currentProject.id === project.id
+                          ? "info"
+                          : "secondary"
+                      }
+                      style={{ justifyContent: "flex-start" }}
+                      fullWidth
+                    >
+                      {project.name}
+                    </Button>
+                  </Grid>
+                  <Grid item xs={6} sm={3}>
+                    <Button
+                      onClick={(event) => handleDeleteProject(event, project)}
+                    >
+                      <DeleteIcon
+                        key={project.id + "-delete"}
+                        color="secondary"
+                      />
+                    </Button>
+                  </Grid>
+                </Grid>
               </Grid>
             );
           })}
       {isSmallScreen && (
-        <Grid item>
-          <TextField
-            id="select"
-            select
-            fullWidth
-            label="Select Project"
-            onChange={(event) => {
-              props.handleProjectSelect(event, event.target.value);
-              handleChange(event);
-            }}
-            defaultValue={0}
-          >
-            <MenuItem value={0}>
-              <HomeIcon />
-            </MenuItem>
-            {projects
-              .slice(0)
-              .reverse()
-              .map((project: Project) => {
-                return (
-                  <MenuItem value={project.id} key={project.id}>
-                    {project.name.toUpperCase()}
-                  </MenuItem>
-                );
-              })}
-          </TextField>
-          {props.currentProject && (
-            <Button>
-              <DeleteIcon
-                color="secondary"
-                onClick={(event) =>
-                  props.currentProject &&
-                  handleDeleteProject(event, props.currentProject)
-                }
-              />
-            </Button>
-          )}
+        <Grid item width={"100%"}>
+          <Grid container alignItems={"center"}>
+            <Grid item xs={props.currentProject ? 11 : 12}>
+              <TextField
+                id="select"
+                select
+                fullWidth
+                label="Select Project"
+                onChange={(event) => {
+                  props.handleProjectSelect(event, event.target.value);
+                }}
+                value={props.currentProject ? props.currentProject.id : 0}
+                defaultValue={0}
+              >
+                <MenuItem value={0}>
+                  <HomeIcon />
+                </MenuItem>
+                {projects
+                  .slice(0)
+                  .reverse()
+                  .map((project: Project) => {
+                    return (
+                      <MenuItem value={project.id} key={project.id}>
+                        {project.name.toUpperCase()}
+                      </MenuItem>
+                    );
+                  })}
+              </TextField>
+            </Grid>
+            <Grid item xs={1}>
+              {props.currentProject && (
+                <Button
+                  onClick={(event) =>
+                    props.currentProject &&
+                    handleDeleteProject(event, props.currentProject)
+                  }
+                >
+                  <DeleteIcon color="secondary" />
+                </Button>
+              )}
+            </Grid>
+          </Grid>
         </Grid>
       )}
     </Grid>
