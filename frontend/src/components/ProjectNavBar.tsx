@@ -11,6 +11,7 @@ import { CreateField } from "./CreateField";
 import HomeIcon from "@mui/icons-material/Home";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { Theme } from "@mui/system";
+import useTasksApi from "../services/useTasksApi";
 
 interface ProjectNavBarProps {
   currentProject?: Project;
@@ -20,6 +21,7 @@ interface ProjectNavBarProps {
 export const ProjectNavBar = (props: ProjectNavBarProps) => {
   const [projects, setProjects] = useState<Project[]>([]);
   const { projectsApi } = useProjectsApi();
+  const { tasksApi } = useTasksApi();
 
   const [value, setValue] = useState<string>("");
 
@@ -53,13 +55,23 @@ export const ProjectNavBar = (props: ProjectNavBarProps) => {
 
   const handleDeleteProject = (
     event: MouseEvent<SVGSVGElement>,
-    deletedProjectID: number
+    deletedProject: Project
   ) => {
     event.preventDefault();
-    props.handleProjectSelect(event, undefined);
-    projectsApi.remove(deletedProjectID).then((updatedProjects: Project[]) => {
+    deletedProject.tasks.map((task: Task) => {
+      tasksApi
+        .remove(task.id)
+        .then((updatedTasks: Task[]) => {
+          console.log(updatedTasks);
+        })
+        .catch((err: Error) => {
+          console.log(err);
+        });
+    });
+    projectsApi.remove(deletedProject.id).then((updatedProjects: Project[]) => {
       setProjects(updatedProjects);
     });
+    props.handleProjectSelect(event, undefined);
   };
 
   return (
@@ -110,7 +122,7 @@ export const ProjectNavBar = (props: ProjectNavBarProps) => {
                 <Button>
                   <DeleteIcon
                     color="secondary"
-                    onClick={(event) => handleDeleteProject(event, project.id)}
+                    onClick={(event) => handleDeleteProject(event, project)}
                   />
                 </Button>
               </Grid>
@@ -149,7 +161,7 @@ export const ProjectNavBar = (props: ProjectNavBarProps) => {
                 color="secondary"
                 onClick={(event) =>
                   props.currentProject &&
-                  handleDeleteProject(event, props.currentProject.id)
+                  handleDeleteProject(event, props.currentProject)
                 }
               />
             </Button>

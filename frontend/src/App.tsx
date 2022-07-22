@@ -39,6 +39,7 @@ const theme = createTheme({
 
 function App() {
   const { projectsApi } = useProjectsApi();
+
   const [currentProject, setCurrentProject] = useState<Project>();
 
   const handleProjectSelect = async (
