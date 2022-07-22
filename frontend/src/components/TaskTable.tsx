@@ -44,11 +44,11 @@ export const TaskTable = (props: TaskTableProps) => {
       b.priority ? b.priority : 0,
     ];
     const [A_DEADLINE, B_DEADLINE] = [
-      a.deadline ? a.deadline.getTime() : 0,
-      b.deadline ? b.deadline.getTime() : 0,
+      a.deadline ? new Date(a.deadline).getTime() : 0,
+      b.deadline ? new Date(b.deadline).getTime() : 0,
     ];
 
-    return B_PRIORITY - A_PRIORITY || B_DEADLINE - A_DEADLINE;
+    return B_PRIORITY - A_PRIORITY || A_DEADLINE - B_DEADLINE;
   };
 
   return (

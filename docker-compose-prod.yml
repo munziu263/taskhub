@@ -6,12 +6,15 @@ services:
     build:  
       context: ./api
       dockerfile: Dockerfile.prod
+    restart: always
     ports: 
     - "5000:5000"
     env_file:
       - ./.env.prod
     depends_on:
       - db
+    networks:
+      - taskhub
   frontend:
     stdin_open: true
     tty: true
@@ -20,14 +23,29 @@ services:
       dockerfile: Dockerfile.prod
     ports: 
       - "8080:80"
+    networks:
+      - taskhub
     depends_on: 
       - api
   db:
     image: postgres:13-alpine
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=taskhub
+      - POSTGRES_HOST=db
     volumes:
-      - postgres_data_prod:/var/lib/postgresql/data/
-    env_file:
-      - ./.env.prod.db
+      - postgres_data:/var/lib/postgresql/data/
+    networks:
+      - taskhub
+    # env_file:
+    #   - ./.env.prod.db
+
+networks:
+  taskhub:
 
 volumes:
-  postgres_data_prod:
+  postgres_data:

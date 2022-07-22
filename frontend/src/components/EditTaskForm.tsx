@@ -111,6 +111,9 @@ export const EditTaskForm = (props: EditTaskFormProps) => {
               type="date"
               InputLabelProps={{ shrink: true }}
               value={taskValues.deadline ? taskValues.deadline : undefined}
+              defaultValue={
+                taskValues.deadline ? taskValues.deadline : undefined
+              }
               onChange={handleChange}
               fullWidth
             />
