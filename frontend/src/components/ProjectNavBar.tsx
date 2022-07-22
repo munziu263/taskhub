@@ -5,10 +5,11 @@ import {
   TextField,
   useMediaQuery,
 } from "@mui/material";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import useProjectsApi from "../services/useProjectsApi";
 import { CreateField } from "./CreateField";
 import HomeIcon from "@mui/icons-material/Home";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { Theme } from "@mui/system";
 
 interface ProjectNavBarProps {
@@ -50,13 +51,24 @@ export const ProjectNavBar = (props: ProjectNavBarProps) => {
     });
   };
 
+  const handleDeleteProject = (
+    event: MouseEvent<SVGSVGElement>,
+    deletedProjectID: number
+  ) => {
+    event.preventDefault();
+    props.handleProjectSelect(event, undefined);
+    projectsApi.remove(deletedProjectID).then((updatedProjects: Project[]) => {
+      setProjects(updatedProjects);
+    });
+  };
+
   return (
     <Grid
       container
       id="project-selector"
       direction="column"
       padding={1}
-      spacing={1}
+      spacing={2}
     >
       <Grid item>
         <CreateField handleCreate={handleCreateProject} obj_type={"project"} />
@@ -95,6 +107,12 @@ export const ProjectNavBar = (props: ProjectNavBarProps) => {
                 >
                   {project.name}
                 </Button>
+                <Button>
+                  <DeleteIcon
+                    color="secondary"
+                    onClick={(event) => handleDeleteProject(event, project.id)}
+                  />
+                </Button>
               </Grid>
             );
           })}
@@ -109,6 +127,7 @@ export const ProjectNavBar = (props: ProjectNavBarProps) => {
               props.handleProjectSelect(event, event.target.value);
               handleChange(event);
             }}
+            defaultValue={0}
           >
             <MenuItem value={0}>
               <HomeIcon />
@@ -124,6 +143,17 @@ export const ProjectNavBar = (props: ProjectNavBarProps) => {
                 );
               })}
           </TextField>
+          {props.currentProject && (
+            <Button>
+              <DeleteIcon
+                color="secondary"
+                onClick={(event) =>
+                  props.currentProject &&
+                  handleDeleteProject(event, props.currentProject.id)
+                }
+              />
+            </Button>
+          )}
         </Grid>
       )}
     </Grid>
