@@ -62,12 +62,10 @@ export const ProjectNavBar = (props: ProjectNavBarProps) => {
     deletedProject: Project
   ) => {
     event.preventDefault();
-    deletedProject.tasks.map((task: Task) => {
+    deletedProject.tasks.forEach((task: Task) => {
       tasksApi
         .remove(task.id)
-        .then((updatedTasks: Task[]) => {
-          console.log(updatedTasks);
-        })
+        .then((updatedTasks: Task[]) => {})
         .catch((err: Error) => {
           console.log(err);
         });
@@ -142,8 +140,12 @@ export const ProjectNavBar = (props: ProjectNavBarProps) => {
                       onClick={(event) => handleDeleteProject(event, project)}
                     >
                       <DeleteIcon
-                        key={project.id + "-delete"}
-                        color="secondary"
+                        color={
+                          props.currentProject &&
+                          props.currentProject.id === project.id
+                            ? "info"
+                            : "secondary"
+                        }
                       />
                     </Button>
                   </Grid>
