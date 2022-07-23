@@ -22,7 +22,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile.prod
     ports: 
-      - "8080:80"
+      - "80:80"
     networks:
       - taskhub
     depends_on: 
