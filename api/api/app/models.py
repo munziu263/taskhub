@@ -79,7 +79,7 @@ class Project(CRUDMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
     # --- Relationships
-    tasks = db.relationship("Task", backref="project")
+    tasks = db.relationship("Task", cascade="all,delete", backref="project")
 
     def __repr__(self):
         return "<Project %r>" % self.name
